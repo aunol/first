@@ -29,15 +29,15 @@ function Footer(props) {
           <ul>
             <li>
               <a
-                href="https://www.creative-tim.com?ref=nudr-footer"
+                href="https://github.com/aunol/first.git"
                 target="_blank"
               >
-                Creative Tim
+                Final Project
               </a>
             </li>
             <li>
               <a
-                href="https://presentation.creative-tim.com?ref=nudr-footer"
+                href="localhost:3000"
                 target="_blank"
               >
                 About Us
@@ -45,10 +45,10 @@ function Footer(props) {
             </li>
             <li>
               <a
-                href="https://blog.creative-tim.com?ref=nudr-footer"
+                href="https://www.gooogle.com"
                 target="_blank"
               >
-                Blog
+                Google
               </a>
             </li>
           </ul>
