@@ -22,7 +22,7 @@ import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
-import logo from "logo-white.svg";
+import logo2 from "botie-white.png";
 
 var ps;
 
@@ -49,23 +49,28 @@ function Sidebar(props) {
   return (
     <div className="sidebar" data-color={props.backgroundColor}>
       <div className="logo">
+        {/* 사이드바 로고 */}
         <a
-          href="https://www.creative-tim.com?ref=nudr-sidebar"
-          className="simple-text logo-mini"
-          target="_blank"
+          href="http://localhost:3000"
+          className="simple-text logo-mini"         
         >
+          {/* 로고 이미지 */}
           <div className="logo-img">
-            <img src={logo} alt="react-logo" />
+            <img src={logo2} style={{ filter: 'brightness(0.9)' }}/>
           </div>
         </a>
+        {/* 사이드바 타이틀 */}
         <a
-          href="https://www.creative-tim.com?ref=nudr-sidebar"
+          href="http://localhost:3000"
           className="simple-text logo-normal"
-          target="_blank"
+          tag="h4"
+          style={{ marginTop: '2px' }}
         >
-          Creative Tim
+          오늘부터 1일
         </a>
       </div>
+
+      {/* 사이드 바 메뉴 */}
       <div className="sidebar-wrapper" ref={sidebar}>
         <Nav>
           {props.routes.map((prop, key) => {

@@ -32,7 +32,7 @@ import {
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-function User() {
+function Friends() {
   return (
     <>
       <PanelHeader size="sm" />
@@ -43,7 +43,7 @@ function User() {
               <CardHeader>
                 <h5 className="title">Hello Profile</h5>
               </CardHeader>
-              <CardBody>
+              <CardBody>+
                 <Form>
                   <Row>
                     <Col className="pr-1" md="5">
@@ -218,4 +218,4 @@ function User() {
   );
 }
 
-export default User;
+export default Friends;

@@ -15,15 +15,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
 
 // reactstrap components
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-function Typography() {
+function Neibor() {
   return (
     <>
       <PanelHeader size="sm" />
@@ -149,4 +148,4 @@ function Typography() {
   );
 }
 
-export default Typography;
+export default Neibor;

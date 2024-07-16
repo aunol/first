@@ -19,20 +19,20 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Container,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  NavItem,
 } from "reactstrap";
 
 import routes from "routes.js";
@@ -158,31 +158,35 @@ function DemoNavbar(props) {
                 </p>
               </Link>
             </NavItem>
+            {/* 로그인 박스 */}
             <Dropdown
               nav
               isOpen={dropdownOpen}
               toggle={(e) => dropdownToggle(e)}
-            >
+            >              
               <DropdownToggle caret nav>
-                <i className="now-ui-icons location_world" />
+                <i className="now-ui-icons users_single-02" />
                 <p>
-                  <span className="d-lg-none d-md-block">Some Actions</span>
+                  <span className="d-lg-none d-md-block">Account</span>
                 </p>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag="a">Action</DropdownItem>
-                <DropdownItem tag="a">Another Action</DropdownItem>
-                <DropdownItem tag="a">Something else here</DropdownItem>
+                <DropdownItem tag="a">로그인</DropdownItem>
+                <DropdownItem tag="a">회원가입</DropdownItem>
+                <DropdownItem tag="a">회원아이디 찾기</DropdownItem>
+
               </DropdownMenu>
             </Dropdown>
-            <NavItem>
+
+            {/* <NavItem>
               <Link to="#pablo" className="nav-link">
                 <i className="now-ui-icons users_single-02" />
                 <p>
                   <span className="d-lg-none d-md-block">Account</span>
                 </p>
               </Link>
-            </NavItem>
+            </NavItem> */}
+
           </Nav>
         </Collapse>
       </Container>
