@@ -22,7 +22,7 @@ import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-function Neibor() {
+function Neighbor() {
   return (
     <>
       <PanelHeader size="sm" />
@@ -148,4 +148,4 @@ function Neibor() {
   );
 }
 
-export default Neibor;
+export default Neighbor;

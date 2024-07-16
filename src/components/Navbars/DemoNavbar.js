@@ -18,6 +18,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
+  Button,
   Collapse,
   Container,
   Dropdown,
@@ -28,12 +29,19 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Nav,
   Navbar,
   NavbarBrand,
   NavbarToggler,
-  NavItem,
+  NavItem
 } from "reactstrap";
+
+import { useState } from "react";
 
 import routes from "routes.js";
 
@@ -42,6 +50,12 @@ function DemoNavbar(props) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
+
+ // State for modals
+ const [loginModal, setLoginModal] = useState(false);
+ const [signupModal, setSignupModal] = useState(false);
+ const [findIdModal, setFindIdModal] = useState(false);
+
   const sidebarToggle = React.useRef();
   const toggle = () => {
     if (isOpen) {
@@ -103,8 +117,11 @@ function DemoNavbar(props) {
       sidebarToggle.current.classList.toggle("toggled");
     }
   }, [location]);
+
+
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
+    <div>
     <Navbar
       color={
         location.pathname.indexOf("full-screen-maps") !== -1 ? "white" : color
@@ -171,9 +188,12 @@ function DemoNavbar(props) {
                 </p>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag="a">로그인</DropdownItem>
-                <DropdownItem tag="a">회원가입</DropdownItem>
-                <DropdownItem tag="a">회원아이디 찾기</DropdownItem>
+                  <DropdownItem tag="a" style={{ cursor: 'pointer' }}  
+                    onClick={() => setLoginModal(true)}>로그인</DropdownItem>
+                  <DropdownItem tag="a" style={{ cursor: 'pointer' }} 
+                    onClick={() => setSignupModal(true)}>회원가입</DropdownItem>
+                  <DropdownItem tag="a" style={{ cursor: 'pointer' }} 
+                    onClick={() => setFindIdModal(true)}>회원아이디 찾기</DropdownItem>               
 
               </DropdownMenu>
             </Dropdown>
@@ -191,6 +211,79 @@ function DemoNavbar(props) {
         </Collapse>
       </Container>
     </Navbar>
+
+      {/* Login Modal */}
+      <Modal isOpen={loginModal} toggle={() => setLoginModal(false)}>
+        <ModalHeader toggle={() => setLoginModal(false)}>로그인</ModalHeader>
+        <ModalBody>
+          <form>
+            <div className="form-group">
+              <Label for="loginUserid">아이디</Label>
+              <Input type="text" name="userid" id="loginUserid" placeholder="아이디를 입력하세요" />
+            </div>
+            <div className="form-group">
+              <Label for="loginPassword">비밀번호</Label>
+              <Input type="password" name="password" id="loginPassword" placeholder="비밀번호를 입력하세요" />
+            </div>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={() => setLoginModal(false)}>로그인</Button>
+          <Button color="secondary" onClick={() => setLoginModal(false)}>취소</Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Signup Modal */}
+      <Modal isOpen={signupModal} toggle={() => setSignupModal(false)}>
+        <ModalHeader toggle={() => setSignupModal(false)}>회원가입</ModalHeader>
+        <ModalBody>
+          <form>
+            <div className="form-group">
+              <Label for="signupUserid">아이디</Label>
+              <Input type="text" name="userid" id="signupUserid" placeholder="아이디를 입력하세요" />
+            </div>
+            <div className="form-group">
+              <Label for="signupPassword">비밀번호</Label>
+              <Input type="password" name="password" id="signupPassword" placeholder="비밀번호를 입력하세요" />
+            </div>
+            <div className="form-group">
+              <Label for="signupcheckPassword">비밀번호 확인</Label>
+              <Input type="password" name="checkpassword" id="signupCheckpassword" placeholder="비밀번호를 다시 입력하세요" />
+            </div>
+            <div className="form-group">
+              <Label for="signupEmail">이메일</Label>
+              <Input type="email" name="email" id="signupEmail" placeholder="이메일을 입력하세요" />
+            </div>
+            <div className="form-group">
+              <Label for="signupConfirmPassword">닉네임</Label>
+              <Input type="text" name="username" id="signupUsername" placeholder="닉네임을 입력하세요" />
+            </div>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={() => setSignupModal(false)}>회원가입</Button>
+          <Button color="secondary" onClick={() => setSignupModal(false)}>취소</Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Find ID Modal */}
+      <Modal isOpen={findIdModal} toggle={() => setFindIdModal(false)}>
+        <ModalHeader toggle={() => setFindIdModal(false)}>회원아이디 찾기</ModalHeader>
+        <ModalBody>
+          <form>
+            <div className="form-group">
+              <Label for="findIdEmail">이메일</Label>
+              <Input type="email" name="email" id="findIdEmail" placeholder="이메일을 입력하세요" />
+            </div>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={() => setFindIdModal(false)}>아이디 찾기</Button>
+          <Button color="secondary" onClick={() => setFindIdModal(false)}>취소</Button>
+        </ModalFooter>
+      </Modal>
+
+    </div>
   );
 }
 
