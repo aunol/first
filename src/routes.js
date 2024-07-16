@@ -20,7 +20,7 @@ import Dashboard from "views/Dashboard.js";
 import Friends from "views/Friends.js";
 import Home from "views/Home.js";
 import FullScreenMap from "views/Hospital.js";
-import Neibor from "views/Neibor.js";
+import Neighbor from "views/Neighbor.js";
 
 var dashRoutes = [
  
@@ -55,10 +55,10 @@ var dashRoutes = [
   },
   
   {
-    path: "/neibor",
-    name: "NEIBOR",
+    path: "/neighbor",
+    name: "Neighbor",
     icon: "design-2_ruler-pencil",
-    component: <Neibor />,
+    component: <Neighbor />,
     layout: "/admin",
   },
 
