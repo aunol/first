@@ -20,13 +20,12 @@ import React from "react";
 import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Footer from "components/Footer/Footer.js";
+import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 
@@ -34,7 +33,7 @@ var ps;
 
 function Admin(props) {
   const location = useLocation();
-  const [backgroundColor, setBackgroundColor] = React.useState("blue");
+  const [backgroundColor, setBackgroundColor] = React.useState("orange");
   const mainPanel = React.useRef();
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -74,15 +73,15 @@ function Admin(props) {
           })}
           <Route
             path="/admin"
-            element={<Navigate to="/admin/dashboard" replace />}
+            element={<Navigate to="/admin/hospital" replace />}
           />
         </Routes>
         <Footer fluid />
       </div>
-      <FixedPlugin
+      {/* <FixedPlugin
         bgColor={backgroundColor}
         handleColorClick={handleColorClick}
-      />
+      /> */}
     </div>
   );
 }

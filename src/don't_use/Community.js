@@ -15,7 +15,6 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
 
 // reactstrap components
 import {
@@ -23,17 +22,17 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Table,
-  Row,
   Col,
+  Row,
+  Table,
 } from "reactstrap";
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-import { thead, tbody } from "variables/general";
+import { tbody, thead } from "variables/general";
 
-function RegularTables() {
+function Community() {
   return (
     <>
       <PanelHeader size="sm" />
@@ -128,4 +127,4 @@ function RegularTables() {
   );
 }
 
-export default RegularTables;
+export default Community;

@@ -15,71 +15,76 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import Community from "views/Community.js";
 import Dashboard from "views/Dashboard.js";
-import Notifications from "views/Notifications.js";
-import Icons from "views/Icons.js";
-import Typography from "views/Typography.js";
-import TableList from "views/TableList.js";
-import Maps from "views/Maps.js";
-import Upgrade from "views/Upgrade.js";
-import UserPage from "views/UserPage.js";
+import Friends from "views/Friends.js";
+import Home from "views/Home.js";
+import FullScreenMap from "views/Hospital.js";
+import Neibor from "views/Neibor.js";
 
 var dashRoutes = [
+ 
+  
   {
+    path: "/hospital",
+    name: "HOSPITAL",
+    icon: "location_map-big",
+    component: <FullScreenMap />,
+    layout: "/admin",
+  },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "design_image",
+  //   component: <Icons />,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/notifications",
+  //   name: "",
+  //   icon: "ui-1_bell-53",
+  //   component: <Notifications />,
+  //   layout: "/admin",
+  // },
+  {
+    path: "/friends",
+    name: "FRIENDS",
+    icon: "users_single-02",
+    component: <Friends />,
+    layout: "/admin",
+  },
+  
+  {
+    path: "/neibor",
+    name: "NEIBOR",
+    icon: "design-2_ruler-pencil",
+    component: <Neibor />,
+    layout: "/admin",
+  },
+
+  {
+    path: "/community",
+    name: "COMMUNITY",
+    icon: "files_paper",
+    component: <Community />,
+    layout: "/admin",
+  },
+
+  {
+    pro: true,
     path: "/dashboard",
     name: "Dashboard",
     icon: "design_app",
     component: <Dashboard />,
     layout: "/admin",
   },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "design_image",
-    component: <Icons />,
-    layout: "/admin",
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "location_map-big",
-    component: <Maps />,
-    layout: "/admin",
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "ui-1_bell-53",
-    component: <Notifications />,
-    layout: "/admin",
-  },
-  {
-    path: "/user-page",
-    name: "User Profile",
-    icon: "users_single-02",
-    component: <UserPage />,
-    layout: "/admin",
-  },
-  {
-    path: "/extended-tables",
-    name: "Table List",
-    icon: "files_paper",
-    component: <TableList />,
-    layout: "/admin",
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    icon: "design-2_ruler-pencil",
-    component: <Typography />,
-    layout: "/admin",
-  },
+
   {
     pro: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
+    path: "/home",
+    name: "HOME",
     icon: "objects_spaceship",
-    component: <Upgrade />,
+    component: <Home />,
     layout: "/admin",
   },
 ];
