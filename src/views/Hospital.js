@@ -51,13 +51,13 @@ function FullScreenMap() {
               <CardHeader>
 
               <div className="d-flex justify-content-between align-items-center">
-          <CardTitle tag="h4" className="m-0">Map</CardTitle>
+          <CardTitle tag="h4" className="title">Map</CardTitle>
           <form className="flex-grow-5">
             <InputGroup className="no-border">
               <Input placeholder="Search..." />
               <InputGroupAddon addonType="append">
                 <InputGroupText>
-                  <i className="now-ui-icons ui-1_zoom-bold" />
+                  <i className="now-ui-icons ui-1_zoom-bold"  style={{ marginLeft: '14px'}}/>
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
@@ -82,11 +82,11 @@ function FullScreenMap() {
           <Col md={2} xs={12}>
           <Card>
               {/* 병원이름검색 */}
-              <CardHeader>
+              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px'}}>
                 <CardTitle tag="h4">Check List</CardTitle>
               </CardHeader>
 
-              <CardBody>
+              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
                 {/* 체크박스 */}
                 <CheckBoxList />
                 <Hour24 />
@@ -95,11 +95,11 @@ function FullScreenMap() {
             </Card>
 
             <Card>              
-              <CardHeader>
-                               
+              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px' }}>
+              <CardTitle tag="h4">SearchList</CardTitle>
               </CardHeader>
 
-              <CardBody>
+              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
                 {/* 병원리스트 */}
                 <HospitalList />
                 

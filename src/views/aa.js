@@ -1,29 +1,5 @@
-/*!
-
-=========================================================
-* Now UI Dashboard React - v1.5.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/now-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/now-ui-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// reactstrap components
-// core components
-import PanelHeader from "components/PanelHeader/PanelHeader.js";
-
 import React, { useState } from 'react';
 import {
-  Row,
-  Col,
   Card,
   CardHeader,
   CardBody,
@@ -42,7 +18,7 @@ import {
   PaginationLink,
 } from 'reactstrap';
 
-const Neighbor = () => {
+const SimpleTable = () => {
   const [category, setCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -90,11 +66,6 @@ const Neighbor = () => {
   const handleLastPage = () => setCurrentPage(totalPages);
 
   return (
-    <>
-      <PanelHeader size="sm" />
-      <div className="content">
-      <Row>
-          <Col md={12} xs={12} >
     <Card>
       <CardHeader style={{ paddingTop: '2px' }}>
         <div className="d-flex justify-content-between align-items-center">
@@ -130,16 +101,16 @@ const Neighbor = () => {
         <Table responsive>
           <thead className="text-primary">
             <tr>
-              <th style={{ width: '15%', textAlign: "center"}}>작성자</th>
-              <th style={{ width: '70%', textAlign: "center"}}>제목</th>
-              <th style={{ width: '15%', textAlign: "center"}} >날짜</th>
+              <th style={{ width: '20%' }}>작성자</th>
+              <th style={{ width: '70%' }}>제목</th>
+              <th style={{ width: '10%' }} className="text-right">날짜</th>
             </tr>
           </thead>
           <tbody>
             {currentItems.map((prop, key) => (
               <tr key={key}>
                 {prop.data.map((item, index) => (
-                  <td key={index} style={{ textAlign:"center" }}>
+                  <td key={index} className={index === 2 ? 'text-right' : ''}>
                     {item}
                   </td>
                 ))}
@@ -147,7 +118,7 @@ const Neighbor = () => {
             ))}
           </tbody>
         </Table>
-        <Pagination style={{ justifyContent: 'center' }}>
+        <Pagination>
           <PaginationItem disabled={currentPage === 1}>
             <PaginationLink first onClick={handleFirstPage} />
           </PaginationItem>
@@ -170,15 +141,7 @@ const Neighbor = () => {
         </Pagination>
       </CardBody>
     </Card>
-
-    </Col>
-          
-          </Row>
-        </div>
-      </>
-
-        )
-  
+  );
 };
 
-export default Neighbor;
+export default SimpleTable;

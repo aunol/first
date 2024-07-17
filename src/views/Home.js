@@ -32,6 +32,9 @@ import {
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
+import HomeMain from "homeinside/homemain";
+import HomePost from "homeinside/homepost";
+import HomeTitle from "homeinside/hometitle";
 
 function Home() {
   return (
@@ -44,16 +47,14 @@ function Home() {
               <CardHeader>
               <div className="d-flex justify-content-between align-items-center">
                 {/* 타이틀 */}
-                <CardTitle tag="h4" className="title">Hello MyHome
-                  <a style={{ cursor: 'pointer' }}> + </a>
-                </CardTitle>
+                <HomeTitle />
                 {/*  검색 */}
                  <form className="flex-grow-5">
                  <InputGroup className="no-border">
                    <Input placeholder="Search..." />
                    <InputGroupAddon addonType="append">
                    <InputGroupText>
-                    <i className="now-ui-icons ui-1_zoom-bold" />
+                    <i className="now-ui-icons ui-1_zoom-bold"   style={{ marginLeft: '14px'}}/>
                    </InputGroupText>
                   </InputGroupAddon>
                   </InputGroup>
@@ -61,17 +62,11 @@ function Home() {
                </div>       
 
               </CardHeader>
-              {/* 내용 */}
+              
               <CardBody>
-                <Card>
-
-
-                </Card>
-
-                <Card>
-
-                
-                </Card>                
+                <HomeMain />
+                <HomePost />
+                            
               </CardBody>
             </Card>
           </Col>

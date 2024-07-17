@@ -161,7 +161,7 @@ function DemoNavbar(props) {
               <Input placeholder="Search..." />
               <InputGroupAddon addonType="append">
                 <InputGroupText>
-                  <i className="now-ui-icons ui-1_zoom-bold" />
+                  <i className="now-ui-icons ui-1_zoom-bold"   style={{ marginLeft: '14px'}}/>
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>

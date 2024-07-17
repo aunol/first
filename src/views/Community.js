@@ -31,6 +31,8 @@ import {
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 import { tbody, thead } from "variables/general";
+import SimpleTable from "./aa";
+import { Link } from "react-router-dom";
 
 function Community() {
   return (
@@ -41,7 +43,12 @@ function Community() {
           <Col xs={12}>
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Simple Table</CardTitle>
+                <CardTitle tag="h4" className="title" 
+                  onClick={ ()=>{
+                    alert("clicked")
+                    Link("/admin/aa")
+                  } }
+                >Simple Table</CardTitle>
               </CardHeader>
               <CardBody>
                 <Table responsive>
