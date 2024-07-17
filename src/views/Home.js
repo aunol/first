@@ -18,14 +18,16 @@
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
   CardTitle,
   Col,
-  Row,
-  Table,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row
 } from "reactstrap";
 
 // core components
@@ -36,105 +38,44 @@ function Home() {
     <>
       <PanelHeader size="sm" />
       <div className="content">
-        <Row>
-          <Col>
+      <Row>
+          <Col md={12} xs={12} >
             <Card>
               <CardHeader>
-                <CardTitle>Now UI Dashboard PRO React</CardTitle>
-                <p className="category">
-                  Are you looking for more components? Please check our Premium
-                  Version of Now UI Dashboard React.
-                </p>
+              <div className="d-flex justify-content-between align-items-center">
+                {/* 타이틀 */}
+                <CardTitle tag="h4" className="title">Hello MyHome
+                  <a style={{ cursor: 'pointer' }}> + </a>
+                </CardTitle>
+                {/*  검색 */}
+                 <form className="flex-grow-5">
+                 <InputGroup className="no-border">
+                   <Input placeholder="Search..." />
+                   <InputGroupAddon addonType="append">
+                   <InputGroupText>
+                    <i className="now-ui-icons ui-1_zoom-bold" />
+                   </InputGroupText>
+                  </InputGroupAddon>
+                  </InputGroup>
+                 </form>
+               </div>       
+
               </CardHeader>
+              {/* 내용 */}
               <CardBody>
-                <Table responsive>
-                  <thead>
-                    <tr>
-                      <th />
-                      <th className="text-center">Free</th>
-                      <th className="text-center">PRO</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Components</td>
-                      <td className="text-center">16</td>
-                      <td className="text-center">160</td>
-                    </tr>
-                    <tr>
-                      <td>Plugins</td>
-                      <td className="text-center">5</td>
-                      <td className="text-center">13</td>
-                    </tr>
-                    <tr>
-                      <td>Example Pages</td>
-                      <td className="text-center">7</td>
-                      <td className="text-center">27</td>
-                    </tr>
-                    <tr>
-                      <td>Documentation</td>
-                      <td className="text-center">
-                        <i className="fa fa-check text-success" />
-                      </td>
-                      <td className="text-center">
-                        <i className="fa fa-check text-success" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>SASS Files</td>
-                      <td className="text-center">
-                        <i className="fa fa-check text-success" />
-                      </td>
-                      <td className="text-center">
-                        <i className="fa fa-check text-success" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Login/Register/Lock Pages</td>
-                      <td className="text-center">
-                        <i className="fa fa-times text-danger" />
-                      </td>
-                      <td className="text-center">
-                        <i className="fa fa-check text-success" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Premium Support</td>
-                      <td className="text-center">
-                        <i className="fa fa-times text-danger" />
-                      </td>
-                      <td className="text-center">
-                        <i className="fa fa-check text-success" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td />
-                      <td className="text-center">Free</td>
-                      <td className="text-center">From $59</td>
-                    </tr>
-                    <tr>
-                      <td />
-                      <td className="text-center">
-                        <Button href="#" color="default" className="btn-round">
-                          Current Version
-                        </Button>
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          target="_blank"
-                          href="https://www.creative-tim.com/product/now-ui-dashboard-pro-react/?ref=nudr-upgrade"
-                          color="info"
-                          className="btn-round"
-                        >
-                          Upgrade to PRO
-                        </Button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <Card>
+
+
+                </Card>
+
+                <Card>
+
+                
+                </Card>                
               </CardBody>
             </Card>
           </Col>
+          
         </Row>
       </div>
     </>

@@ -46,7 +46,7 @@ function FullScreenMap() {
       <PanelHeader size="sm" />
       <div className="content">
         <Row>
-          <Col md={8} xs={12} >
+          <Col md={10} xs={12} >
             <Card>
               <CardHeader>
 
@@ -79,7 +79,7 @@ function FullScreenMap() {
               </CardBody>
             </Card>
           </Col>
-          <Col md={4} xs={12}>
+          <Col md={2} xs={12}>
           <Card>
               {/* 병원이름검색 */}
               <CardHeader>
