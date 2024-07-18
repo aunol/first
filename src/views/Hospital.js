@@ -43,30 +43,67 @@ import Hour24 from "variables/hour24";
 function FullScreenMap() {
   return (
     <>
-      <PanelHeader size="sm" />
+      <PanelHeader
+        content={
+          <div className="header text-center">
+            <h1 className="title">Hospital</h1>
+            
+          </div>
+        }
+      />
       <div className="content">
         <Row>
-          <Col md={10} xs={12} >
+
+        <Col md={2} xs={12} style={{ minWidth: '185px' }}>
+          <Card>
+              {/* 카테고리 카드 */}
+              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px'}}>
+                <CardTitle tag="h4">Check List</CardTitle>
+              </CardHeader>
+
+              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
+               
+                <CheckBoxList />
+                <Hour24 />
+
+              </CardBody>
+            </Card>
+             {/* 검색리스트 카드 */}
+            <Card>              
+              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px' }}>
+              <CardTitle tag="h4">SearchList</CardTitle>
+              </CardHeader>
+
+              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
+                {/* 병원리스트 */}
+                <HospitalList />
+                
+              </CardBody>
+            </Card>
+          </Col> 
+
+          <Col md={9} xs={12} >
             <Card>
               <CardHeader>
-
               <div className="d-flex justify-content-between align-items-center">
-          <CardTitle tag="h4" className="title">Map</CardTitle>
-          <form className="flex-grow-5">
-            <InputGroup className="no-border">
-              <Input placeholder="Search..." />
-              <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="now-ui-icons ui-1_zoom-bold"  style={{ marginLeft: '14px'}}/>
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
-        </div>
+                {/* 타이틀 */}
+                <h4 className="title">Hospital Map</h4>
+                {/*  검색 */}
+                <form className="flex-grow-5">
+                 <InputGroup className="no-border">
+                   <Input placeholder="Search..." />
+                   <InputGroupAddon addonType="append">
+                   <InputGroupText>
+                    <i className="now-ui-icons ui-1_zoom-bold"   style={{ marginLeft: '14px'}}/>
+                   </InputGroupText>
+                  </InputGroupAddon>
+                  </InputGroup>
+                </form>
+              </div>       
          
 
               </CardHeader>
-              <CardBody>
+              <CardBody >
                 <div
                   id="map"
                   className="map"
@@ -79,33 +116,7 @@ function FullScreenMap() {
               </CardBody>
             </Card>
           </Col>
-          <Col md={2} xs={12}>
-          <Card>
-              {/* 병원이름검색 */}
-              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px'}}>
-                <CardTitle tag="h4">Check List</CardTitle>
-              </CardHeader>
-
-              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
-                {/* 체크박스 */}
-                <CheckBoxList />
-                <Hour24 />
-
-              </CardBody>
-            </Card>
-
-            <Card>              
-              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px' }}>
-              <CardTitle tag="h4">SearchList</CardTitle>
-              </CardHeader>
-
-              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
-                {/* 병원리스트 */}
-                <HospitalList />
-                
-              </CardBody>
-            </Card>
-          </Col>
+          
         </Row>
       </div>
     </>

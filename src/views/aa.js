@@ -1,147 +1,175 @@
-import React, { useState } from 'react';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Table,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-} from 'reactstrap';
+{/* <NavbarToggler onClick={toggle}>
+<span className="navbar-toggler-bar navbar-kebab" />
+<span className="navbar-toggler-bar navbar-kebab" />
+<span className="navbar-toggler-bar navbar-kebab" />
+</NavbarToggler>
+<Collapse isOpen={isOpen} navbar className="justify-content-end">
+<form>
+  <InputGroup className="no-border" style={{}}>
+    <Input placeholder="Search..." />
+    <InputGroupAddon addonType="append">
+      <InputGroupText>
+        <i className="now-ui-icons ui-1_zoom-bold"   style={{ marginLeft: '14px'}}/>
+      </InputGroupText>
+    </InputGroupAddon>
+  </InputGroup>
+</form>
+<Nav navbar>
+  <NavItem>
+  <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
 
-const SimpleTable = () => {
-  const [category, setCategory] = useState('All');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+    <Link to="#pablo" className="nav-link" style={{ display: 'inline-block' }}>
+      <i className="now-ui-icons objects_spaceship" />
+      <p>
+        <span className="d-lg-none d-md-block">HOME</span>
+      </p>
+    </Link>
 
-  const itemsPerPage = 7;
+    <Link to="#pablo" className="nav-link" style={{ display: 'inline-block' }}>
+      <i className="now-ui-icons location_map-big" />
+      <p>
+        <span className="d-lg-none d-md-block">HOSPITAL</span>
+      </p>
+    </Link>
 
-  const thead = ['작성자', '제목', '날짜'];
-  const tbody = [
-    { data: ['Author 1', 'Title 1', '2023-01-01'] },
-    { data: ['Author 2', 'Title 2', '2023-01-02'] },
-    { data: ['Author 3', 'Title 3', '2023-01-03'] },
-    { data: ['Author 4', 'Title 4', '2023-01-04'] },
-    { data: ['Author 5', 'Title 5', '2023-01-05'] },
-    { data: ['Author 6', 'Title 6', '2023-01-06'] },
-    { data: ['Author 7', 'Title 7', '2023-01-07'] },
-    { data: ['Author 8', 'Title 8', '2023-01-08'] },
-    { data: ['Author 9', 'Title 9', '2023-01-09'] },
-    { data: ['Author 10', 'Title 10', '2023-01-10'] },
-  ];
+    <Link to="#pablo" className="nav-link" style={{ display: 'inline-block' }}>
+      <i className="now-ui-icons users_single-02" />
+      <p>
+        <span className="d-lg-none d-md-block">FRIENDS</span>
+      </p>
+    </Link>
 
-  const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
+    <Link to="#pablo" className="nav-link" style={{ display: 'inline-block' }}>
+      <i className="now-ui-icons design-2_ruler-pencil" />
+      <p>
+        <span className="d-lg-none d-md-block">Neighbor</span>
+      </p>
+    </Link>
 
-  const handleCategoryChange = (category) => setCategory(category);
+    <Link to="#pablo" className="nav-link" style={{ display: 'inline-block' }}>
+      <i className="now-ui-icons media-2_sound-wave" />
+      <p>
+        <span className="d-lg-none d-md-block">COMMUNITY</span>
+      </p>
+    </Link>
 
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+    <Link to="#pablo" className="nav-link"  style={{ display: 'inline-block' }}>
+      <i className="now-ui-icons ui-1_bell-53" />
+      <p>
+        <span className="d-lg-none d-md-block">Notifications</span>
+      </p>
+    </Link>
 
-  const filteredTbody = tbody.filter((item) =>
-    item.data.some((val) =>
-      val.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredTbody.slice(indexOfFirstItem, indexOfLastItem);
+    </div>
+  </NavItem>
+  {/* 로그인 박스 */}
 
-  const totalPages = Math.ceil(filteredTbody.length / itemsPerPage);
 
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handlePrevPage = () => setCurrentPage(currentPage - 1);
-  const handleNextPage = () => setCurrentPage(currentPage + 1);
-  const handleFirstPage = () => setCurrentPage(1);
-  const handleLastPage = () => setCurrentPage(totalPages);
+//   <Dropdown
+//     nav
+//     isOpen={dropdownOpen}
+//     toggle={(e) => dropdownToggle(e)}
+//   >              
+//     <DropdownToggle caret nav>
+//       <i className="now-ui-icons " />
+//       <p>
+//         <span className="d-lg-none d-md-block">Account</span>
+//       </p>
+//     </DropdownToggle>
+//     <DropdownMenu right>
+//         <DropdownItem tag="a" style={{ cursor: 'pointer' }}  
+//           onClick={() => setLoginModal(true)}>로그인</DropdownItem>
+//         <DropdownItem tag="a" style={{ cursor: 'pointer' }} 
+//           onClick={() => setSignupModal(true)}>회원가입</DropdownItem>
+//         <DropdownItem tag="a" style={{ cursor: 'pointer' }} 
+//           onClick={() => setFindIdModal(true)}>회원아이디 찾기</DropdownItem>               
 
-  return (
-    <Card>
-      <CardHeader style={{ paddingTop: '2px' }}>
-        <div className="d-flex justify-content-between align-items-center">
-          <CardTitle tag="h4" className="title">
-            Simple Table
-          </CardTitle>
-          <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-            <DropdownToggle caret>
-              {category}
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem onClick={() => handleCategoryChange('All')}>All</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 1')}>Category 1</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 2')}>Category 2</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 3')}>Category 3</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 4')}>Category 4</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 5')}>Category 5</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <form className="flex-grow-5">
-            <InputGroup className="no-border">
-              <Input placeholder="Search..." value={searchTerm} onChange={handleSearchChange} />
-              <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="now-ui-icons ui-1_zoom-bold" style={{ marginRight: '3px' }} />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
-        </div>
-      </CardHeader>
-      <CardBody>
-        <Table responsive>
-          <thead className="text-primary">
-            <tr>
-              <th style={{ width: '20%' }}>작성자</th>
-              <th style={{ width: '70%' }}>제목</th>
-              <th style={{ width: '10%' }} className="text-right">날짜</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((prop, key) => (
-              <tr key={key}>
-                {prop.data.map((item, index) => (
-                  <td key={index} className={index === 2 ? 'text-right' : ''}>
-                    {item}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <Pagination>
-          <PaginationItem disabled={currentPage === 1}>
-            <PaginationLink first onClick={handleFirstPage} />
-          </PaginationItem>
-          <PaginationItem disabled={currentPage === 1}>
-            <PaginationLink previous onClick={handlePrevPage} />
-          </PaginationItem>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <PaginationItem active={index + 1 === currentPage} key={index}>
-              <PaginationLink onClick={() => handlePageChange(index + 1)}>
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem disabled={currentPage === totalPages}>
-            <PaginationLink next onClick={handleNextPage} />
-          </PaginationItem>
-          <PaginationItem disabled={currentPage === totalPages}>
-            <PaginationLink last onClick={handleLastPage} />
-          </PaginationItem>
-        </Pagination>
-      </CardBody>
-    </Card>
-  );
-};
+//     </DropdownMenu>
+//   </Dropdown>
 
-export default SimpleTable;
+//   {/* <NavItem>
+//     <Link to="#pablo" className="nav-link">
+//       <i className="now-ui-icons users_single-02" />
+//       <p>
+//         <span className="d-lg-none d-md-block">Account</span>
+//       </p>
+//     </Link>
+//   </NavItem> */}
+
+// </Nav>
+// </Collapse>
+// </Container>
+// </Navbar>
+
+// {/* Login Modal */}
+// <Modal isOpen={loginModal} toggle={() => setLoginModal(false)}>
+// <ModalHeader toggle={() => setLoginModal(false)}>로그인</ModalHeader>
+// <ModalBody>
+// <form>
+//   <div className="form-group">
+//     <Label for="loginUserid">아이디</Label>
+//     <Input type="text" name="userid" id="loginUserid" placeholder="아이디를 입력하세요" />
+//   </div>
+//   <div className="form-group">
+//     <Label for="loginPassword">비밀번호</Label>
+//     <Input type="password" name="password" id="loginPassword" placeholder="비밀번호를 입력하세요" />
+//   </div>
+// </form>
+// </ModalBody>
+// <ModalFooter>
+// <Button color="primary" onClick={() => setLoginModal(false)}>로그인</Button>
+// <Button color="secondary" onClick={() => setLoginModal(false)}>취소</Button>
+// </ModalFooter>
+// </Modal>
+
+// {/* Signup Modal */}
+// <Modal isOpen={signupModal} toggle={() => setSignupModal(false)}>
+// <ModalHeader toggle={() => setSignupModal(false)}>회원가입</ModalHeader>
+// <ModalBody>
+// <form>
+//   <div className="form-group">
+//     <Label for="signupUserid">아이디</Label>
+//     <Input type="text" name="userid" id="signupUserid" placeholder="아이디를 입력하세요" />
+//   </div>
+//   <div className="form-group">
+//     <Label for="signupPassword">비밀번호</Label>
+//     <Input type="password" name="password" id="signupPassword" placeholder="비밀번호를 입력하세요" />
+//   </div>
+//   <div className="form-group">
+//     <Label for="signupcheckPassword">비밀번호 확인</Label>
+//     <Input type="password" name="checkpassword" id="signupCheckpassword" placeholder="비밀번호를 다시 입력하세요" />
+//   </div>
+//   <div className="form-group">
+//     <Label for="signupEmail">이메일</Label>
+//     <Input type="email" name="email" id="signupEmail" placeholder="이메일을 입력하세요" />
+//   </div>
+//   <div className="form-group">
+//     <Label for="signupConfirmPassword">닉네임</Label>
+//     <Input type="text" name="username" id="signupUsername" placeholder="닉네임을 입력하세요" />
+//   </div>
+// </form>
+// </ModalBody>
+// <ModalFooter>
+// <Button color="primary" onClick={() => setSignupModal(false)}>회원가입</Button>
+// <Button color="secondary" onClick={() => setSignupModal(false)}>취소</Button>
+// </ModalFooter>
+// </Modal>
+
+// {/* Find ID Modal */}
+// <Modal isOpen={findIdModal} toggle={() => setFindIdModal(false)}>
+// <ModalHeader toggle={() => setFindIdModal(false)}>회원아이디 찾기</ModalHeader>
+// <ModalBody>
+// <form>
+//   <div className="form-group">
+//     <Label for="findIdEmail">이메일</Label>
+//     <Input type="email" name="email" id="findIdEmail" placeholder="이메일을 입력하세요" />
+//   </div>
+// </form>
+// </ModalBody>
+// <ModalFooter>
+// <Button color="primary" onClick={() => setFindIdModal(false)}>아이디 찾기</Button>
+// <Button color="secondary" onClick={() => setFindIdModal(false)}>취소</Button>
+// </ModalFooter>
+// </Modal>

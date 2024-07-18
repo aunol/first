@@ -20,26 +20,26 @@
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-  Row,
-  Col,
   Card,
-  CardHeader,
   CardBody,
+  CardHeader,
   CardTitle,
-  Table,
+  Col,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Input,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Pagination,
   PaginationItem,
   PaginationLink,
+  Row,
+  Table,
 } from 'reactstrap';
 
 const Neighbor = () => {
@@ -91,11 +91,18 @@ const Neighbor = () => {
 
   return (
     <>
-      <PanelHeader size="sm" />
+      <PanelHeader
+        content={
+          <div className="header text-center">
+            <h1 className="title">Neighbor</h1>
+            
+          </div>
+        }
+      />
       <div className="content">
       <Row>
           <Col md={12} xs={12} >
-    <Card>
+       <Card>
       <CardHeader style={{ paddingTop: '2px' }}>
         <div className="d-flex justify-content-between align-items-center">
           <CardTitle tag="h4" className="title">

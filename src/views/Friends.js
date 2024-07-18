@@ -21,30 +21,31 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
   Col,
   Input,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Row,
-  Button,
-  Table,
-  Container,
-  Modal
-
+  Row
 } from "reactstrap";
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
-import FriendTitle from "friends/friendtitle";
 import FriendMain from "friends/friendmain";
 import FriendPost from "friends/friendpost";
+import FriendTitle from "friends/friendtitle";
 
 function Friends() {
   return (
     <>
-      <PanelHeader size="sm" />
+     <PanelHeader
+        content={
+          <div className="header text-center">
+            <h1 className="title">Friends</h1>
+            
+          </div>
+        }
+      />
       <div className="content">
         <Row>
           <Col md="12" ms="12">

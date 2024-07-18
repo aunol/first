@@ -56,17 +56,17 @@ const rows = [
         </thead>
         <tbody>
           {rows.map(({ id, name }) => (
-            <tr key={id}>
+            <tr key={id} style={{ display: 'grid', gridTemplateColumns: '1fr 10fr' }} >
               <td style={{ width: '20%' }}>
                 <input
                   type='checkbox'
                   checked={checkedIdsSet.has(id)}
                   onChange={() => handleOnChange(id)}
-                  style={{ transform: 'scale(0.7)', WebkitTransform: 'scale(0.7)', MozTransform: 'scale(0.7)' }}
+                  style={{  transform: 'scale(0.7)', WebkitTransform: 'scale(0.7)', MozTransform: 'scale(0.7)' }}
                      />                     
               </td>
               <td style={{ width: '80%', fontSize: '12px' }}>{name}</td>
-              <td> </td>
+              
             </tr>
           ))}
         </tbody>

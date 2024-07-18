@@ -16,14 +16,22 @@
 
 */
 import Community from "views/Community.js";
-import Dashboard from "views/Dashboard.js";
 import Friends from "views/Friends.js";
 import Home from "views/Home.js";
 import FullScreenMap from "views/Hospital.js";
 import Neighbor from "views/Neighbor.js";
+import Notifications from "views/Notifications.js";
 
 var dashRoutes = [
- 
+
+  {
+    pro: true,
+    path: "/home",
+    name: "HOME",
+    icon: "objects_spaceship",
+    component: <Home />,
+    layout: "/admin",
+  },
   
   {
     path: "/hospital",
@@ -65,27 +73,30 @@ var dashRoutes = [
   {
     path: "/community",
     name: "COMMUNITY",
-    icon: "files_paper",
+    icon: "media-2_sound-wave",
     component: <Community />,
     layout: "/admin",
   },
 
   {
-    pro: true,
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "design_app",
-    component: <Dashboard />,
+    path: "/noti",
+    name: "NOTIFICATION",
+    icon: "files_paper",
+    component: <Notifications />,
     layout: "/admin",
   },
 
-  {
-    pro: true,
-    path: "/home",
-    name: "HOME",
-    icon: "objects_spaceship",
-    component: <Home />,
-    layout: "/admin",
-  },
+  {}
+
+  // {
+  //   pro: true,
+  //   path: "/dashboard",
+  //   name: "Dashboard",
+  //   icon: "design_app",
+  //   component: <Dashboard />,
+  //   layout: "/admin",
+  // },
+
+
 ];
 export default dashRoutes;

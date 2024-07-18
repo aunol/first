@@ -21,7 +21,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
   Col,
   Input,
   InputGroup,
@@ -39,7 +38,14 @@ import HomeTitle from "homeinside/hometitle";
 function Home() {
   return (
     <>
-      <PanelHeader size="sm" />
+      <PanelHeader
+        content={
+          <div className="header text-center">
+            <h1 className="title">Home</h1>
+            
+          </div>
+        }
+      />
       <div className="content">
       <Row>
           <Col md={12} xs={12} >
