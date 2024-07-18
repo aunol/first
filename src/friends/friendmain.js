@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Card, CardBody, Collapse, Button, InputGroup, InputGroupAddon, InputGroupText, Input, FormGroup, Label } from 'reactstrap';
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
+import { Button, Card, CardBody, Col, Collapse, Row } from 'reactstrap';
 
 
 const ImageSlider = () => {
@@ -53,27 +53,58 @@ const AccordionCommentTable = ({ comments }) => {
   );
 };
 
-
 const FriendMain = () => {
   const comments = [
     { user: 'User1', text: 'This is a comment' },
     { user: 'User2', text: 'This is another comment' }
   ];
 
-  const post = {
-    image: 'path_to_post_image.jpg',
-    text: 'This is a post',
-    comments: comments
-  };
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 768); // Example breakpoint for small screens
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div>
+      <Row>
+    <Col md={8} xs={12}>
       <Card>
         <CardBody>
-          <ImageSlider />
-          <AccordionCommentTable comments={comments} />
+          <ImageSlider />          
         </CardBody>
-      </Card>      
+      </Card>
+      </Col>
+
+      <Col md={4} xs={12}>
+          {isSmallScreen ? (
+            <Card>
+              <CardBody>          
+                <AccordionCommentTable comments={comments} />
+              </CardBody>
+            </Card>
+          ) : (
+            <Card>
+              <CardBody>
+                {comments.map((comment, index) => (
+                  <div key={index}>
+                    <strong>{comment.user}</strong>
+                    <p>{comment.text}</p>
+                  </div>
+                ))}
+              </CardBody>
+            </Card>
+          )}
+        </Col>
+      </Row>
     </div>
   );
 };

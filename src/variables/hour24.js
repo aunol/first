@@ -47,13 +47,13 @@ const rows = [
           </tr>
           
           <tr style={{ textAlign: 'center' }}>                        
-            <th>24hour</th>
+            <th>Etc</th>
           </tr>
   
         </thead>
         <tbody>
           {rows.map(({ id, name }) => (
-            <tr key={id}>
+            <tr key={id} style={{ display: 'grid', gridTemplateColumns: '1fr 6fr' }}>
               <td style={{ width: '20%' }}>
                 <input
                   type='checkbox'

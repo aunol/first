@@ -30,14 +30,20 @@ import {
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
-import { tbody, thead } from "variables/general";
-import SimpleTable from "./aa";
 import { Link } from "react-router-dom";
+import { tbody, thead } from "variables/general";
 
 function Community() {
   return (
     <>
-      <PanelHeader size="sm" />
+      <PanelHeader
+        content={
+          <div className="header text-center">
+            <h1 className="title">Community</h1>
+            
+          </div>
+        }
+      />
       <div className="content">
         <Row>
           <Col xs={12}>
