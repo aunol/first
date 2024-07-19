@@ -21,6 +21,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "assets/css/demo.css";
 import "assets/scss/now-ui-dashboard.scss?v1.5.0";
 import "bootstrap/dist/css/bootstrap.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 import AdminLayout from "layouts/Admin.js";
 import "./index.css";

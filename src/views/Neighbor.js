@@ -42,31 +42,37 @@ import {
   Table,
 } from 'reactstrap';
 
+
 const Neighbor = () => {
-  const [category, setCategory] = useState('All');
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
   const itemsPerPage = 7;
 
-  const thead = ['작성자', '제목', '날짜'];
+  const thead = ['작성자', '제목', '날짜', '조회수'];
   const tbody = [
-    { data: ['Author 1', 'Title 1', '2023-01-01'] },
-    { data: ['Author 2', 'Title 2', '2023-01-02'] },
-    { data: ['Author 3', 'Title 3', '2023-01-03'] },
-    { data: ['Author 4', 'Title 4', '2023-01-04'] },
-    { data: ['Author 5', 'Title 5', '2023-01-05'] },
-    { data: ['Author 6', 'Title 6', '2023-01-06'] },
-    { data: ['Author 7', 'Title 7', '2023-01-07'] },
-    { data: ['Author 8', 'Title 8', '2023-01-08'] },
-    { data: ['Author 9', 'Title 9', '2023-01-09'] },
-    { data: ['Author 10', 'Title 10', '2023-01-10'] },
+    { data: ['Author 1', 'Title 1', '2023-01-01',0] },
+    { data: ['Author 2', 'Title 2', '2023-01-02',0] },
+    { data: ['Author 3', 'Title 3', '2023-01-03',0] },
+    { data: ['Author 4', 'Title 4', '2023-01-04',0] },
+    { data: ['Author 5', 'Title 5', '2023-01-05',0] },
+    { data: ['Author 6', 'Title 6', '2023-01-06',0] },
+    { data: ['Author 7', 'Title 7', '2023-01-07',0] },
+    { data: ['Author 8', 'Title 8', '2023-01-08',0] },
+    { data: ['Author 9', 'Title 9', '2023-01-09',0] },
+    { data: ['Author 10', 'Title 10', '2023-01-10',0] },
   ];
 
-  const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
 
-  const handleCategoryChange = (category) => setCategory(category);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [category, setCategory] = useState('All');
+
+    const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
+
+    const handleCategoryChange = (newCategory) => {setCategory(newCategory)};
+  
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -105,23 +111,23 @@ const Neighbor = () => {
        <Card>
       <CardHeader style={{ paddingTop: '2px' }}>
         <div className="d-flex justify-content-between align-items-center">
-          <CardTitle tag="h4" className="title">
-            Simple Table
-          </CardTitle>
-          <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-            <DropdownToggle caret>
-              {category}
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem onClick={() => handleCategoryChange('All')}>All</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 1')}>Category 1</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 2')}>Category 2</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 3')}>Category 3</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 4')}>Category 4</DropdownItem>
-              <DropdownItem onClick={() => handleCategoryChange('Category 5')}>Category 5</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <form className="flex-grow-5">
+        <CardTitle tag="h4" className="title mb-0">
+        <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} className="ml-2">
+        <DropdownToggle caret className="title">
+           {category}
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem onClick={() => handleCategoryChange('All')}>All</DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('Category 1')}>Category 1</DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('Category 2')}>Category 2</DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('Category 3')}>Category 3</DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('Category 4')}>Category 4</DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('Category 5')}>Category 5</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+      </CardTitle>
+     
+          <form className="title mb-0">
             <InputGroup className="no-border">
               <Input placeholder="Search..." value={searchTerm} onChange={handleSearchChange} />
               <InputGroupAddon addonType="append">
@@ -138,8 +144,9 @@ const Neighbor = () => {
           <thead className="text-primary">
             <tr>
               <th style={{ width: '15%', textAlign: "center"}}>작성자</th>
-              <th style={{ width: '70%', textAlign: "center"}}>제목</th>
+              <th style={{ width: '55%', textAlign: "center"}}>제목</th>
               <th style={{ width: '15%', textAlign: "center"}} >날짜</th>
+              <th style={{ width: '15%', textAlign: "center"}} >조회수</th>
             </tr>
           </thead>
           <tbody>

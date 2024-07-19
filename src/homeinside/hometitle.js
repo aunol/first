@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Card, CardHeader, CardBody, CardTitle } from 'reactstrap';
+import { useState } from 'react';
+import { CardTitle } from 'reactstrap';
 
 const HomeTitle = () => {
   const [title, setTitle] = useState('Hello MyHome');
