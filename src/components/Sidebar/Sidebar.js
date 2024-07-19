@@ -2,6 +2,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Nav } from "reactstrap";
+import AddUser from "user/AddUser";
 
 var ps;
 
@@ -14,6 +15,9 @@ function Sidebar(props) {
   const [loginModal, setLoginModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
   const [findIdModal, setFindIdModal] = useState(false);
+
+  const closeModal = () => setIsModalOpen(false);
+
 
   const activeRoute = (routeName) => {
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -111,37 +115,8 @@ function Sidebar(props) {
         </Modal>
 
         {/* Signup Modal */}
-        <Modal isOpen={signupModal} toggle={() => setSignupModal(false)}>
-          <ModalHeader toggle={() => setSignupModal(false)}>회원가입</ModalHeader>
-          <ModalBody>
-            <form>
-              <div className="form-group">
-                <Label for="signupUserid">아이디</Label>
-                <Input type="text" name="userid" id="signupUserid" placeholder="아이디를 입력하세요" />
-              </div>
-              <div className="form-group">
-                <Label for="signupPassword">비밀번호</Label>
-                <Input type="password" name="password" id="signupPassword" placeholder="비밀번호를 입력하세요" />
-              </div>
-              <div className="form-group">
-                <Label for="signupCheckpassword">비밀번호 확인</Label>
-                <Input type="password" name="checkpassword" id="signupCheckpassword" placeholder="비밀번호를 다시 입력하세요" />
-              </div>
-              <div className="form-group">
-                <Label for="signupEmail">이메일</Label>
-                <Input type="email" name="email" id="signupEmail" placeholder="이메일을 입력하세요" />
-              </div>
-              <div className="form-group">
-                <Label for="signupUsername">닉네임</Label>
-                <Input type="text" name="username" id="signupUsername" placeholder="닉네임을 입력하세요" />
-              </div>
-            </form>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={() => setSignupModal(false)}>회원가입</Button>
-            <Button color="secondary" onClick={() => setSignupModal(false)}>취소</Button>
-          </ModalFooter>
-        </Modal>
+        <AddUser isOpen={signupModal} toggle={() => setSignupModal(false)}/>
+          
 
         {/* Find ID Modal */}
         <Modal isOpen={findIdModal} toggle={() => setFindIdModal(false)}>

@@ -26,13 +26,16 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  Nav,
+  NavItem,
   Row
 } from "reactstrap";
+
+import { Link } from "react-router-dom";
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import HomeMain from "homeinside/homemain";
-import HomePost from "homeinside/homepost";
 import HomeTitle from "homeinside/hometitle";
 
 function Home() {
@@ -55,6 +58,25 @@ function Home() {
                 {/* 타이틀 */}
                 <HomeTitle />
                 {/*  검색 */}
+                <Nav navbar >
+            <NavItem style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center' }}>
+              <Link to="#pablo" className="nav-link" style={{ marginRight: '10px' }}>
+                <i className="now-ui-icons media-1_album" />
+                <p>
+                  <span className="d-lg-none d-md-block"></span>
+                </p>
+              </Link>
+
+              <Link to="#pablo" className="nav-link" style={{ marginRight: '10px' }}>
+                <i className="now-ui-icons media-2_sound-wave" />
+                <p>
+                  <span className="d-lg-none d-md-block"></span>
+                </p>
+              </Link>
+
+            </NavItem>
+            </Nav>
+
                  <form className="flex-grow-5">
                  <InputGroup className="no-border">
                    <Input placeholder="Search..." />
@@ -65,13 +87,14 @@ function Home() {
                   </InputGroupAddon>
                   </InputGroup>
                  </form>
+                 
+
                </div>       
 
               </CardHeader>
               
               <CardBody>
-                <HomeMain />
-                <HomePost />
+                <HomeMain />                
                             
               </CardBody>
             </Card>

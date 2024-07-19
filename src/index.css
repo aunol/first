@@ -18,6 +18,12 @@ body {
     background-color: #ffffff;
     border-radius: 8px;
   }
+  .navbar-scroll .navbar-toggler {
+    position: fixed;
+    top: 0;
+    left: 50px; /* NavbarBrand의 너비에 따라 조정 */
+    z-index: 1000;
+  }
 
 
   

@@ -1,20 +1,4 @@
-/*!
 
-=========================================================
-* Now UI Dashboard React - v1.5.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/now-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/now-ui-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -23,7 +7,6 @@ import {
   NavbarBrand
 } from "reactstrap";
 
-
 import routes from "routes.js";
 
 function DemoNavbar(props) {
@@ -31,10 +14,6 @@ function DemoNavbar(props) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
-
- // State for modals
- 
-
   const sidebarToggle = React.useRef();
   const toggle = () => {
     if (isOpen) {
@@ -77,16 +56,8 @@ function DemoNavbar(props) {
     sidebarToggle.current.classList.toggle("toggled");
   };
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
-  const updateColor = () => {
-    if (window.innerWidth < 993 && isOpen) {
-      setColor("white");
-    } else {
-      setColor("transparent");
-    }
-  };
-  React.useEffect(() => {
-    window.addEventListener("resize", updateColor);
-  }, []);
+
+
   React.useEffect(() => {
     if (
       window.innerWidth < 993 &&
@@ -97,10 +68,9 @@ function DemoNavbar(props) {
     }
   }, [location]);
 
-
+  
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
-    <div>
     <Navbar
       color={
         location.pathname.indexOf("full-screen-maps") !== -1 ? "white" : color
@@ -129,9 +99,10 @@ function DemoNavbar(props) {
           </div>
           <NavbarBrand href="/">{getBrand()}</NavbarBrand>
         </div>
-        </Container>
-      </Navbar>
-    </div>
+        
+        
+      </Container>
+    </Navbar>
   );
 }
 

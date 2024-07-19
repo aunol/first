@@ -1,5 +1,5 @@
+import { Card, CardBody, CardHeader, Input, InputGroup, InputGroupAddon, InputGroupText } from "reactstrap";
 import NeighborList from "./neighborlist";
-import { Input, InputGroup, InputGroupAddon, InputGroupText, Card, CardHeader, CardBody } from "reactstrap";
 
 
 function NeighborTitle(){
