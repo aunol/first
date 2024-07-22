@@ -1,13 +1,15 @@
 import PerfectScrollbar from "perfect-scrollbar";
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Nav } from "reactstrap";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav } from "reactstrap";
 import AddUser from "user/AddUser";
+import FindId from "user/FindId";
+import Login from "user/Login";
 
 var ps;
 
 function Sidebar(props) {
-  const sidebar = React.useRef();
+  const sidebar = useRef();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -16,27 +18,44 @@ function Sidebar(props) {
   const [signupModal, setSignupModal] = useState(false);
   const [findIdModal, setFindIdModal] = useState(false);
 
-  const closeModal = () => setIsModalOpen(false);
+  // State for login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
+  // Active route function
   const activeRoute = (routeName) => {
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
 
-  React.useEffect(() => {
+  // Initialize PerfectScrollbar and check login status on mount
+  useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(sidebar.current, {
         suppressScrollX: true,
         suppressScrollY: false,
       });
     }
-    return function cleanup() {
+    // Cleanup PerfectScrollbar on unmount
+    return () => {
       if (navigator.platform.indexOf("Win") > -1) {
         ps.destroy();
       }
     };
-  });
+  }, []);
 
+  // Check login status when component mounts
+  useEffect(() => {
+    const loggedIn = sessionStorage.getItem("isLoggedIn");
+    setIsLoggedIn(loggedIn === "true");
+  }, []);
+
+  // Handle logout logic
+  const handleLogout = () => {
+    // Clear session storage and update login state
+    sessionStorage.clear();
+    setIsLoggedIn(false);
+  };
+
+  // Toggle dropdown menu
   const dropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -55,27 +74,39 @@ function Sidebar(props) {
                 </span>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem
-                  tag="a"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setLoginModal(true)}
-                >
-                  로그인
-                </DropdownItem>
-                <DropdownItem
-                  tag="a"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setSignupModal(true)}
-                >
-                  회원가입
-                </DropdownItem>
-                <DropdownItem
-                  tag="a"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setFindIdModal(true)}
-                >
-                  회원아이디 찾기
-                </DropdownItem>
+                {!isLoggedIn ? (
+                  <>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setLoginModal(true)}
+                    >
+                      로그인
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setSignupModal(true)}
+                    >
+                      회원가입
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setFindIdModal(true)}
+                    >
+                      회원아이디 찾기
+                    </DropdownItem>
+                  </>
+                ) : (
+                  <DropdownItem
+                    tag="a"
+                    style={{ cursor: 'pointer' }}
+                    onClick={handleLogout}
+                  >
+                    로그아웃
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           </li>
@@ -94,46 +125,13 @@ function Sidebar(props) {
         </Nav>
 
         {/* Login Modal */}
-        <Modal isOpen={loginModal} toggle={() => setLoginModal(false)}>
-          <ModalHeader toggle={() => setLoginModal(false)}>로그인</ModalHeader>
-          <ModalBody>
-            <form>
-              <div className="form-group">
-                <Label for="loginUserid">아이디</Label>
-                <Input type="text" name="userid" id="loginUserid" placeholder="아이디를 입력하세요" />
-              </div>
-              <div className="form-group">
-                <Label for="loginPassword">비밀번호</Label>
-                <Input type="password" name="password" id="loginPassword" placeholder="비밀번호를 입력하세요" />
-              </div>
-            </form>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={() => setLoginModal(false)}>로그인</Button>
-            <Button color="secondary" onClick={() => setLoginModal(false)}>취소</Button>
-          </ModalFooter>
-        </Modal>
+        <Login isOpen={loginModal} toggle={() => setLoginModal(false)} />
 
-        {/* Signup Modal */}
-        <AddUser isOpen={signupModal} toggle={() => setSignupModal(false)}/>
-          
+        {/* Add User Modal */}
+        <AddUser isOpen={signupModal} toggle={() => setSignupModal(false)} />
 
         {/* Find ID Modal */}
-        <Modal isOpen={findIdModal} toggle={() => setFindIdModal(false)}>
-          <ModalHeader toggle={() => setFindIdModal(false)}>회원아이디 찾기</ModalHeader>
-          <ModalBody>
-            <form>
-              <div className="form-group">
-                <Label for="findIdEmail">이메일</Label>
-                <Input type="email" name="email" id="findIdEmail" placeholder="이메일을 입력하세요" />
-              </div>
-            </form>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={() => setFindIdModal(false)}>아이디 찾기</Button>
-            <Button color="secondary" onClick={() => setFindIdModal(false)}>취소</Button>
-          </ModalFooter>
-        </Modal>
+        <FindId isOpen={findIdModal} toggle={() => setFindIdModal(false)} />
       </div>
     </div>
   );

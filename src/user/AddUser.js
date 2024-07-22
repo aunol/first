@@ -23,95 +23,124 @@ const AddUser = ({ isOpen, toggle }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 유효성 검사 함수
-  const validate = () => {
-    const newErrors = {
-      userId: '',
-      password: '',
-      checkPassword: '',
-      email: '',
-      userName: '',
-    };
+  // 서버 측 중복 검사 함수
+  const checkDuplicate = async (field, value) => {
+    try {
+      const response = await axios.post(`http://localhost:8080/checkDuplicate`, { field, value });
+      return response.data.isDuplicate;
+    } catch (error) {
+      console.error(`${field} 중복 검사 중 오류 발생:`, error);
+      return false;
+    }
+  };
 
-    let isValid = true;
-
-    // 아이디 유효성 검사
+  // 개별 유효성 검사 함수
+  const validateUserId = async () => {
+    let error = '';
     if (!userId) {
-        newErrors.userId = '아이디를 입력하세요';
-        isValid = false;
-      } else if (!/^[a-zA-Z0-9]{1,12}$/.test(userId)) {
-        newErrors.userId = '아이디는 1~12자까지의 영어와 숫자만 포함될 수 있습니다';
-        isValid = false;
-      }
+      error = '아이디를 입력하세요';
+    } else if (!/^[a-zA-Z0-9]{6,12}$/.test(userId)) {
+      error = '아이디는 1~12자까지의 영어와 숫자만 포함될 수 있습니다';
+    } else if (await checkDuplicate('userId', userId)) {
+      error = '이미 사용 중인 아이디입니다';
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, userId: error }));
+  };
 
-    // 비밀번호 유효성 검사
-    if (!password) {
-        newErrors.password = '비밀번호를 입력하세요';
-        isValid = false;
-      } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/.test(password)) {
-        newErrors.password = '비밀번호는 10~20자이며, 대문자, 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다';
-        isValid = false;
-      }
-
-    // 비밀번호 확인 검사
-    if (password !== checkPassword) {
-        newErrors.checkPassword = '비밀번호가 일치하지 않습니다';
-        isValid = false;
-      }
-
-    // 이메일 유효성 검사
+  const validateEmail = async () => {
+    let error = '';
     if (!email) {
-        newErrors.email = '이메일을 입력하세요';
-        isValid = false;
-      } else if (!/\S+@\S+\.\S+/.test(email)) {
-        newErrors.email = '유효한 이메일 주소를 입력하세요';
-        isValid = false;
-      }
+      error = '이메일을 입력하세요';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      error = '유효한 이메일 주소를 입력하세요';
+    } else if (await checkDuplicate('email', email)) {
+      error = '이미 사용 중인 이메일입니다';
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, email: error }));
+  };
 
-    // 닉네임 유효성 검사
+  const validateUserName = async () => {
+    let error = '';
     if (!userName) {
-        newErrors.userName = '닉네임을 입력하세요';
-        isValid = false;
-      }
+      error = '닉네임을 입력하세요';
+    } else if (!/^[a-zA-Z0-9가-힣]{4,12}$/.test(userName)) {
+      error = '닉네임은 4~12자까지의 영어, 숫자, 한글만 포함될 수 있습니다';
+    } else if (await checkDuplicate('userName', userName)) {
+      error = '이미 사용 중인 닉네임입니다';
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, userName: error }));
+  };
 
-    setErrors(newErrors);
-    return isValid;
+  const validatePassword = () => {
+    let error = '';
+    if (!password) {
+      error = '비밀번호를 입력하세요';
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/.test(password)) {
+      error = '비밀번호는 10~20자이며, 대문자, 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다';
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, password: error }));
+  };
+
+  const validateCheckPassword = () => {
+    let error = '';
+    if (password !== checkPassword) {
+      error = '비밀번호가 일치하지 않습니다';
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, checkPassword: error }));
+  };
+
+  // 전체 유효성 검사 함수
+  const validate = async () => {
+    await validateUserId();
+    validatePassword();
+    validateCheckPassword();
+    await validateEmail();
+    await validateUserName();
+
+    return !Object.values(errors).some((error) => error);
   };
 
   // 사용자 추가 함수
-  const addUser = async () => {
+  const addUser = async (evt) => {
+    evt.preventDefault();
     if (isSubmitting) return; // 이미 제출 중인 경우 무시
 
-    if (!validate()) return; // 유효성 검사 실패 시 제출 중지
+    if (!await validate()) {
+      alert('양식에 맞지 않는 내용입니다. 다시 확인하세요.');
+      return; // 유효성 검사 실패 시 제출 중지
+    }
 
     setIsSubmitting(true);
 
-    const data = { userId, password, email, userName };
+    const data = { userId:userId, password:password, email:email, userName:userName };
 
     try {
-      await axios.post('http://localhost:8080/addUser', null, { params: data });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await axios.post('http://localhost:8080/addUser', data);
+      const result = response.data;
 
-    // 중복 체크 결과 처리
-    if (response.data && response.data.isDuplicate) {
-    // 중복된 필드가 있으면 해당 필드를 빈 칸으로 설정
-        const { duplicateFields } = response.data;
-        setUserId(duplicateFields.includes('userId') ? '' : userId);
-        setEmail(duplicateFields.includes('email') ? '' : email);
-        setUserName(duplicateFields.includes('userName') ? '' : userName);
-        alert('중복된 아이디, 이메일 또는 닉네임이 있습니다. 다시 작성해주세요.');
-    } else {
-        alert('회원가입 성공');
-        navigate('/login');
-     }
-    } catch (err) {
+      if (result.message === '가입되었습니다.') {
+        alert('가입되었습니다.');
+        navigate('/');
+      } else if(result.message === '아이디 혹은 비밀번호를 확인해주세요.') {
         alert('회원가입 실패');
+      }
+    } catch (err) {
+      console.error('회원가입 중 오류 발생:', err);
+      alert('오류발생');
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
+      setUserId('');
+      setPassword('');
+      setCheckPassword('');
+      setEmail('');
+      setUserName('');
+      setErrors({});
     }
-    };
+  };
 
   // 취소 버튼 클릭 핸들러
-  const cancle = (evt) => {
+  const cancel = (evt) => {
     evt.preventDefault();
     toggle(); // 모달 닫기
   };
@@ -130,6 +159,7 @@ const AddUser = ({ isOpen, toggle }) => {
               placeholder="아이디를 입력하세요"
               value={userId}
               onChange={(evt) => setUserId(evt.target.value)}
+              onBlur={validateUserId}
               invalid={!!errors.userId}
             />
             <FormFeedback>{errors.userId}</FormFeedback>
@@ -143,6 +173,7 @@ const AddUser = ({ isOpen, toggle }) => {
               placeholder="비밀번호를 입력하세요"
               value={password}
               onChange={(evt) => setPassword(evt.target.value)}
+              onBlur={validatePassword}
               invalid={!!errors.password}
             />
             <FormFeedback>{errors.password}</FormFeedback>
@@ -156,6 +187,7 @@ const AddUser = ({ isOpen, toggle }) => {
               placeholder="비밀번호를 다시 입력하세요"
               value={checkPassword}
               onChange={(evt) => setCheckPassword(evt.target.value)}
+              onBlur={validateCheckPassword}
               invalid={!!errors.checkPassword}
             />
             <FormFeedback>{errors.checkPassword}</FormFeedback>
@@ -169,6 +201,7 @@ const AddUser = ({ isOpen, toggle }) => {
               placeholder="이메일을 입력하세요"
               value={email}
               onChange={(evt) => setEmail(evt.target.value)}
+              onBlur={validateEmail}
               invalid={!!errors.email}
             />
             <FormFeedback>{errors.email}</FormFeedback>
@@ -182,6 +215,7 @@ const AddUser = ({ isOpen, toggle }) => {
               placeholder="닉네임을 입력하세요"
               value={userName}
               onChange={(evt) => setUserName(evt.target.value)}
+              onBlur={validateUserName}
               invalid={!!errors.userName}
             />
             <FormFeedback>{errors.userName}</FormFeedback>
@@ -190,7 +224,7 @@ const AddUser = ({ isOpen, toggle }) => {
       </ModalBody>
       <ModalFooter>
         <Button
-          type='submit'
+          type="submit"
           color="primary"
           onClick={addUser}
           disabled={isSubmitting} // 제출 중에는 버튼 비활성화
@@ -199,7 +233,7 @@ const AddUser = ({ isOpen, toggle }) => {
         </Button>
         <Button
           color="secondary"
-          onClick={cancle}
+          onClick={cancel}
         >
           취소
         </Button>

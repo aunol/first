@@ -22,24 +22,24 @@ import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 import { useState } from 'react';
 import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Col,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Row,
-  Table,
+    Card,
+    CardBody,
+    CardHeader,
+    CardTitle,
+    Col,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+    Pagination,
+    PaginationItem,
+    PaginationLink,
+    Row,
+    Table,
 } from 'reactstrap';
 
 
@@ -127,7 +127,7 @@ const Neighbor = () => {
       </Dropdown>
       </CardTitle>
      
-          <form className="title mb-0">
+          <form className="flex-grow-5">
             <InputGroup className="no-border">
               <Input placeholder="Search..." value={searchTerm} onChange={handleSearchChange} />
               <InputGroupAddon addonType="append">

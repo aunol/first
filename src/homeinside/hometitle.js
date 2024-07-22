@@ -47,6 +47,7 @@ const HomeTitle = () => {
             </div>
           )}
         </CardTitle>
+        
      
   );
 };
