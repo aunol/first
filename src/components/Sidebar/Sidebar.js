@@ -4,7 +4,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav } from "reactstrap";
 import AddUser from "user/AddUser";
 import FindId from "user/FindId";
+import FreInfo from "user/FreInfo";
+import HosInfo from "user/HosInfo";
 import Login from "user/Login";
+import MyInfo from "user/MyInfo";
+import MyWrite from "user/MyWrite";
+import PetInfo from "user/PetInfo";
 
 var ps;
 
@@ -12,14 +17,39 @@ function Sidebar(props) {
   const sidebar = useRef();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // 사이드바 상태 관리
 
   // State for modals
   const [loginModal, setLoginModal] = useState(false);
   const [signupModal, setSignupModal] = useState(false);
   const [findIdModal, setFindIdModal] = useState(false);
+  const [myinfoModal, setMyinfoModal] = useState(false);
+  const [mywriteModal, setMywriteModal] = useState(false);
+  const [petinfoModal, setPetinfoModal] = useState(false);
+  const [freinfoModal, setFreinfoModal] = useState(false);
+  const [hosinfoModal, setHosinfoModal] = useState(false);
 
   // State for login status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // MyPage component
+  function MyPage() {
+    const [uName, setUName] = useState("");
+    
+    useEffect(() => {
+      const castname = sessionStorage.getItem("UserName");
+      if (castname) {
+        setUName(castname);
+      } 
+    }, []);
+
+    return (
+      <DropdownItem tag="a">
+        안녕하세요<br />
+        {uName} 님        
+      </DropdownItem>
+    );
+  }
 
   // Active route function
   const activeRoute = (routeName) => {
@@ -60,19 +90,25 @@ function Sidebar(props) {
     setDropdownOpen(!dropdownOpen);
   };
 
+  // Toggle sidebar open/close
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="sidebar" data-color={props.backgroundColor}>
+    <div className={`sidebar ${isSidebarOpen ? "open" : "closed"}`} data-color={props.backgroundColor}>
       <div className="sidebar-wrapper" ref={sidebar}>
         <Nav>
           <li>
             <Dropdown nav isOpen={dropdownOpen} toggle={dropdownToggle}>
-              <DropdownToggle caret nav>
-                <i className="now-ui-icons ui-1_settings-gear-63" />
+              <DropdownToggle caret nav onClick={toggleSidebar}>
+                <i className={`now-ui-icons ${isSidebarOpen ? "ui-1_settings-gear-63" : "ui-1_settings-gear-63 closed"}`} />
                 <span>
                   <span className="d-lg-none d-md-block" />
-                  Account
+                  {isSidebarOpen ? "ACCOUNT" : "ACCOUNT"}
                 </span>
               </DropdownToggle>
+
               <DropdownMenu right>
                 {!isLoggedIn ? (
                   <>
@@ -99,13 +135,51 @@ function Sidebar(props) {
                     </DropdownItem>
                   </>
                 ) : (
-                  <DropdownItem
-                    tag="a"
-                    style={{ cursor: 'pointer' }}
-                    onClick={handleLogout}
-                  >
-                    로그아웃
-                  </DropdownItem>
+                  <>
+                    <MyPage />
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={handleLogout}
+                    >
+                      로그아웃
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setMyinfoModal(true)}
+                    >
+                      내 정보
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setPetinfoModal(true)}
+                    >
+                      내 펫정보
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setFreinfoModal(true)}
+                    >
+                      내 친구정보
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setHosinfoModal(true)}
+                    >
+                      내 병원정보
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setMywriteModal(true)}
+                    >
+                      내 글정보
+                    </DropdownItem>
+                  </>
                 )}
               </DropdownMenu>
             </Dropdown>
@@ -132,6 +206,21 @@ function Sidebar(props) {
 
         {/* Find ID Modal */}
         <FindId isOpen={findIdModal} toggle={() => setFindIdModal(false)} />
+
+        {/* MyInfo Modal */}
+        <MyInfo isOpen={myinfoModal} toggle={() => setMyinfoModal(false)} />
+
+        {/* PetInfo Modal */}
+        <PetInfo isOpen={petinfoModal} toggle={() => setPetinfoModal(false)} />
+
+        {/* FreInfo Modal */}
+        <FreInfo isOpen={freinfoModal} toggle={() => setFreinfoModal(false)} />
+
+        {/* HosInfo Modal */}
+        <HosInfo isOpen={hosinfoModal} toggle={() => setHosinfoModal(false)} />
+
+        {/* MyWrite Modal */}
+        <MyWrite isOpen={mywriteModal} toggle={() => setMywriteModal(false)} />
       </div>
     </div>
   );
