@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const Login = ({ isOpen, toggle }) => {
+const MyInfo = ({ isOpen, toggle }) => {
    
     const navigate = useNavigate();    
     const [userId, setUserId] = useState('');
@@ -104,4 +104,4 @@ return (
         </Modal>
 )
 }
-export default Login;
+export default MyInfo;
