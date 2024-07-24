@@ -86,7 +86,7 @@ var dashRoutes = [
     layout: "/admin",
   },
 
-  {}
+  
 
   // {
   //   pro: true,
