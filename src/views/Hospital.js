@@ -58,7 +58,7 @@ function FullScreenMap() {
           <Col md={2} xs={12} style={{ minWidth: '185px' }}>
             <Card>
               {/* 카테고리 카드 */}
-              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px' }} />
+              <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
               <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
                 <CheckBoxList onChange={handleSpeciesChange} />
                 <Hour24 onChange={handleHourChange} />
@@ -66,7 +66,7 @@ function FullScreenMap() {
             </Card>
             {/* 검색리스트 카드 */}
             <Card>
-              <CardHeader style={{ paddingTop: '2px', paddingBottom: '2px' }} />
+              <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
               <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
                 {/* 병원리스트 */}
                 <HospitalList hospitals={filterHospitals()} />

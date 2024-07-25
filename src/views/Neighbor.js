@@ -117,12 +117,15 @@ const Neighbor = () => {
            {category}
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem onClick={() => handleCategoryChange('All')}>All</DropdownItem>
-          <DropdownItem onClick={() => handleCategoryChange('Category 1')}>Category 1</DropdownItem>
-          <DropdownItem onClick={() => handleCategoryChange('Category 2')}>Category 2</DropdownItem>
-          <DropdownItem onClick={() => handleCategoryChange('Category 3')}>Category 3</DropdownItem>
-          <DropdownItem onClick={() => handleCategoryChange('Category 4')}>Category 4</DropdownItem>
-          <DropdownItem onClick={() => handleCategoryChange('Category 5')}>Category 5</DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('모든 카테고리')}>모든 카테고리</DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('강아지')}> 강아지 </DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('고양이')}> 고양이 </DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('특수포유류')}> 특수포유류 </DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('파충류')}> 파충류 </DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('양서류')}> 양서류 </DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('어류')}> 어류 </DropdownItem>
+          <DropdownItem onClick={() => handleCategoryChange('조류')}> 조류 </DropdownItem>
+
         </DropdownMenu>
       </Dropdown>
       </CardTitle>
