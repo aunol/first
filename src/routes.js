@@ -21,8 +21,17 @@ import Home from "views/Home.js";
 import FullScreenMap from "views/Hospital.js";
 import Neighbor from "views/Neighbor.js";
 import Notifications from "views/Notifications.js";
+import Account from "views/Account.js";
 
 var dashRoutes = [
+
+   {path: "/account",
+   name: "ACCOUNT",
+   icon: "ui-1_settings-gear-63",
+   component: <Account />,
+   layout: "/admin",
+
+   }, 
 
   {
     pro: true,

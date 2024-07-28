@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, FormFeedback, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -23,10 +23,28 @@ const AddUser = ({ isOpen, toggle }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // 모달이 열릴 때마다 input 필드를 초기화
+  useEffect(() => {
+    if (isOpen) {
+      setUserId('');
+      setPassword('');
+      setCheckPassword('');
+      setEmail('');
+      setUserName('');
+      setErrors({
+        userId: '',
+        password: '',
+        checkPassword: '',
+        email: '',
+        userName: '',
+      });
+    }
+  }, [isOpen]);
+
   // 서버 측 중복 검사 함수
   const checkDuplicate = async (field, value) => {
     try {
-      const response = await axios.post(`http://localhost:8080/checkDuplicate`, { field, value });
+      const response = await axios.post('http://localhost:8080/checkDuplicate', { field, value });
       return response.data.isDuplicate;
     } catch (error) {
       console.error(`${field} 중복 검사 중 오류 발생:`, error);
@@ -40,7 +58,7 @@ const AddUser = ({ isOpen, toggle }) => {
     if (!userId) {
       error = '아이디를 입력하세요';
     } else if (!/^[a-zA-Z0-9]{6,12}$/.test(userId)) {
-      error = '아이디는 1~12자까지의 영어와 숫자만 포함될 수 있습니다';
+      error = '아이디는 6~12자까지의 영어와 숫자만 포함될 수 있습니다';
     } else if (await checkDuplicate('userId', userId)) {
       error = '이미 사용 중인 아이디입니다';
     }
@@ -112,7 +130,7 @@ const AddUser = ({ isOpen, toggle }) => {
 
     setIsSubmitting(true);
 
-    const data = { userId:userId, password:password, email:email, userName:userName };
+    const data = { userId: userId, password: password, email: email, userName: userName };
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -122,7 +140,7 @@ const AddUser = ({ isOpen, toggle }) => {
       if (result.message === '가입되었습니다.') {
         alert('가입되었습니다.');
         navigate('/');
-      } else if(result.message === '아이디 혹은 비밀번호를 확인해주세요.') {
+      } else if (result.message === '아이디 혹은 비밀번호를 확인해주세요.') {
         alert('회원가입 실패');
       }
     } catch (err) {
@@ -142,6 +160,12 @@ const AddUser = ({ isOpen, toggle }) => {
   // 취소 버튼 클릭 핸들러
   const cancel = (evt) => {
     evt.preventDefault();
+    setUserId('');
+    setPassword('');
+    setCheckPassword('');
+    setEmail('');
+    setUserName('');
+    setErrors({});
     toggle(); // 모달 닫기
   };
 

@@ -10,6 +10,8 @@
     "axios": "^1.7.2",
     "bootstrap": "^4.6.2",
     "chart.js": "3.9.1",
+    "mobx": "^6.13.1",
+    "mobx-react-lite": "^4.0.7",
     "perfect-scrollbar": "1.5.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.4",

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -10,6 +10,14 @@ const FindId = ({ isOpen, toggle }) => {
     const url = 'http://localhost:8080/mailCheck';
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 모달이 열릴 때마다 input 필드를 초기화
+  useEffect(() => {
+    if (isOpen) {
+       setEmail('');
+    }
+}, [isOpen]);
+
 
   // 아이디 찾기
   const findId = async(evt) => {
