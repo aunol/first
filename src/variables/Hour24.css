@@ -1,0 +1,35 @@
+.hour24-container {
+    width: 7cm; /* 가로 너비를 7cm로 고정 */
+    font-size: 0.55rem; /* 글씨 크기를 맞춤 */
+  }
+  
+  .hour24-container .custom-control-label {
+    font-size: 0.55rem; /* 글씨 크기 조정 */
+  }
+  
+
+  .selected-options-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 10px;
+  }
+  
+  .selected-option {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin: 0 5px 5px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .remove-button {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  

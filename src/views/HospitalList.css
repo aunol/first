@@ -1,0 +1,15 @@
+.hospital-list-container {
+    background-color: #343a40; /* Dark background */
+    color: white; /* White text color */
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .hospital-list-item {
+    cursor: pointer;
+  }
+  
+  .hospital-list-item.active {
+    background-color: #495057; /* Slightly lighter background for active item */
+  }
+  
