@@ -1,0 +1,19 @@
+.hospital-list-container {
+    height: 11cm; /* 세로 크기를 13cm로 고정합니다. */
+    overflow-y: auto; /* 세로 스크롤을 추가합니다. */
+  }
+  
+
+.hospital-list-item {
+    font-size: 0.55rem; /* 기본 폰트 크기의 55%로 설정합니다. */
+    padding: 3px; /* 패딩을 1px로 설정합니다. */
+  }
+  
+  .hospital-item-label {
+    margin-bottom: 5px; /* 각 항목 간의 간격을 조절합니다. */
+  }
+  
+  .hospital-item-label strong {
+    font-weight: bold; /* 레이블의 글씨를 굵게 표시합니다. */
+  }
+  

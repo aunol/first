@@ -15,13 +15,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import Account from "views/Account.js";
 import Community from "views/Community.js";
 import Friends from "views/Friends.js";
 import Home from "views/Home.js";
-import FullScreenMap from "views/Hospital.js";
+import HospitalContainer from "views/HospitalContainer";
 import Neighbor from "views/Neighbor.js";
 import Notifications from "views/Notifications.js";
-import Account from "views/Account.js";
 
 var dashRoutes = [
 
@@ -33,8 +33,7 @@ var dashRoutes = [
 
    }, 
 
-  {
-    pro: true,
+  {    
     path: "/home",
     name: "HOME",
     icon: "objects_spaceship",
@@ -46,7 +45,7 @@ var dashRoutes = [
     path: "/hospital",
     name: "HOSPITAL",
     icon: "location_map-big",
-    component: <FullScreenMap />,
+    component: <HospitalContainer />,
     layout: "/admin",
   },
   // {

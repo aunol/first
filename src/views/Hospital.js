@@ -1,14 +1,13 @@
-import PanelHeader from 'components/PanelHeader/PanelHeader.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { Card, CardBody, CardHeader, Col, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Card, CardBody, CardHeader, Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import CheckBoxList from 'variables/checkBoxList';
-import HospitalList from 'variables/hospitalList';
 import Hour24 from 'variables/hour24';
-import Kakao from 'variables/kakao';
+import Kakao from 'variables/kakao'; // 올바른 경로 확인
 
 export const hour24Rows = [
   { id: 0, name: '24시간' },
-  { id: 1, name: '2차병원' }
+  { id: 1, name: '응급진료' }
 ];
 
 export const speciesRows = [
@@ -20,14 +19,22 @@ export const speciesRows = [
   { id: 5, name: '어류' }
 ];
 
-export const hospitals = [
-  { name: '병원A', address: '주소A', department: '강아지', hours: '24시간',  phone:'123'},
-  { name: '병원B', address: '주소B', department: '고양이', hours: '2차병원', phone:'234'}
-];
-
-function FullScreenMap() {
+const Hospital = ({ hospitals }) => {
+  const [dropdownOpen, setDropdownOpen] = useState({
+    hospitalList: false,
+    checkBoxList: false,
+    hour24: false
+  });
   const [selectedHours, setSelectedHours] = useState(new Set());
   const [selectedSpecies, setSelectedSpecies] = useState(new Set());
+  const [selectedHospital, setSelectedHospital] = useState(null);
+
+  const toggleDropdown = (dropdown) => {
+    setDropdownOpen({
+      ...dropdownOpen,
+      [dropdown]: !dropdownOpen[dropdown]
+    });
+  };
 
   const handleHourChange = (selectedNames) => {
     setSelectedHours(new Set(selectedNames));
@@ -37,73 +44,89 @@ function FullScreenMap() {
     setSelectedSpecies(new Set(selectedNames));
   };
 
+  const handleHospitalSelect = (hospital) => {
+    setSelectedHospital(hospital);
+  };
+
   const filterHospitals = () => {
-    return hospitals.filter(hospital =>
-      (selectedHours.size === 0 || selectedHours.has(hospital.hours)) &&
-      (selectedSpecies.size === 0 || selectedSpecies.has(hospital.department))
-    );
+    return hospitals.filter(hospital => {
+      const isHourMatch = selectedHours.size === 0 || 
+        Array.from(selectedHours).some(hour => hospital.hospitalType.includes(hour));
+        
+      const isSpeciesMatch = selectedSpecies.size === 0 || 
+        Array.from(selectedSpecies).some(species => hospital.hospitalSpecies.includes(species));
+      
+      return isHourMatch && isSpeciesMatch;
+    });
   };
 
   return (
-    <>
-      <PanelHeader
-        content={
-          <div className="header text-center">
-            <h1 className="title">Hospital</h1>
-          </div>
-        }
-      />
-      <div className="content">
-        <Row>
-          <Col md={2} xs={12} style={{ minWidth: '185px' }}>
-            <Card>
-              {/* 카테고리 카드 */}
-              <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
-              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
-                <CheckBoxList onChange={handleSpeciesChange} />
-                <Hour24 onChange={handleHourChange} />
-              </CardBody>
-            </Card>
-            {/* 검색리스트 카드 */}
-            <Card>
-              <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
-              <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
-                {/* 병원리스트 */}
-                <HospitalList hospitals={filterHospitals()} />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md={9} xs={12}>
-            <Card>
-              <CardHeader>
-                <div className="d-flex justify-content-between align-items-center">
-                  {/* 타이틀 */}
-                  <h4 className="title">Hospital Map</h4>
-                  {/*  검색 */}
-                  <form className="flex-grow-5">
-                    <InputGroup className="no-border">
-                      <Input placeholder="Search..." />
-                      <InputGroupAddon addonType="append">
-                        <InputGroupText>
-                          <i className="now-ui-icons ui-1_zoom-bold" style={{ marginLeft: '14px' }} />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </form>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div id="map" className="map" style={{ position: 'relative', overflow: 'hidden' }}>
-                  {/* 카카오 맵 삽입 */}
-                  <Kakao />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+    <div style={{ padding: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <span style={{ flex: '1', margin: '0 5px' }}>
+          {/* Empty span */}
+        </span>
+        <span style={{ flex: '1', margin: '0 5px' }}>
+          {/* <Dropdown isOpen={dropdownOpen.hospitalList} toggle={() => toggleDropdown('hospitalList')}>
+            <DropdownToggle color="link" style={{ display: 'inline-block', textAlign: 'center', backgroundColor: '#343a40', color: 'white', width: '100%' }}>
+              Hospital List
+            </DropdownToggle>
+            <DropdownMenu right style={{ minWidth: '300px', marginTop: '5px' }}>
+              <Card>
+                <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
+                <CardBody style={{ paddingTop: '2px', paddingBottom: '2px', height: '13cm' }}>
+                  <HospitalList
+                    hospitals={filterHospitals()}
+                    onHospitalClick={handleHospitalSelect}
+                    selectedHospital={selectedHospital}
+                  />
+                </CardBody>
+              </Card>
+            </DropdownMenu>
+          </Dropdown> */}
+        </span>
+        <span style={{ flex: '1', margin: '0 5px' }}>
+          <Dropdown isOpen={dropdownOpen.checkBoxList} toggle={() => toggleDropdown('checkBoxList')}>
+            <DropdownToggle color="link" style={{ display: 'inline-block', textAlign: 'center', backgroundColor: '#343a40', color: 'white', width: '100%' }}>
+              CheckBox List
+            </DropdownToggle>
+            <DropdownMenu right style={{ minWidth: '300px', marginTop: '5px' }}>
+              <Card>
+                <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
+                <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
+                  <CheckBoxList 
+                    options={speciesRows}
+                    onChange={handleSpeciesChange}
+                  />
+                </CardBody>
+              </Card>
+            </DropdownMenu>
+          </Dropdown>
+        </span>
+        <span style={{ flex: '1', margin: '0 5px' }}>
+          <Dropdown isOpen={dropdownOpen.hour24} toggle={() => toggleDropdown('hour24')}>
+            <DropdownToggle color="link" style={{ display: 'inline-block', textAlign: 'center', backgroundColor: '#343a40', color: 'white', width: '100%' }}>
+              Hour24
+            </DropdownToggle>
+            <DropdownMenu right style={{ minWidth: '300px', marginTop: '5px' }}>
+              <Card>
+                <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
+                <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
+                  <Hour24
+                    options={hour24Rows}
+                    onChange={handleHourChange}
+                  />
+                </CardBody>
+              </Card>
+            </DropdownMenu>
+          </Dropdown>
+        </span>
       </div>
-    </>
+      <div style={{ position: 'relative', overflow: 'hidden', height: '600px', flexGrow: 1 }}>
+        <Kakao hospitals={filterHospitals()} selectedHospital={selectedHospital} onHospitalSelect={handleHospitalSelect} />
+      </div>
+    </div>
   );
-}
+};
 
-export default FullScreenMap;
+export default Hospital;
