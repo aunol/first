@@ -1,0 +1,41 @@
+.pet-info-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .pet-info-table td {
+    padding: 5px;
+    text-align: left;
+    border: none; /* 테두리를 보이지 않게 설정 */
+  }
+  
+  .pet-info-table tr td:first-child {
+    width: 30%;
+    font-weight: bold;
+  }
+  
+  .card-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 제목과 버튼을 수직으로 중앙에 배치 */
+  }
+  
+  .card-title-container h4 {
+    margin: 0; /* 제목의 기본 마진을 제거 */
+  }
+  
+  .card-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 제목과 버튼을 수직으로 중앙에 배치 */
+  }
+  
+  .card-header-container h5 {
+    margin: 0; /* 제목의 기본 마진을 제거 */
+  }
+  
+  .card-header-actions {
+    display: flex;
+    gap: 0.5rem; /* 버튼 간의 간격을 추가 */
+  }
+  

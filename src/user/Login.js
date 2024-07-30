@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -36,10 +36,11 @@ const Login = ({ isOpen, toggle }) => {
             if (result.message === '로그인 성공') {
                 setLoginCheck(true);
                 sessionStorage.setItem('isLoggedIn', 'true');
-                sessionStorage.setItem("UserId", result.UserNo); 
+                sessionStorage.setItem("UserNo", result.UserNo); 
                 sessionStorage.setItem("UserId", result.UserId); 
                 sessionStorage.setItem("UserName", result.UserName);
-
+                sessionStorage.setItem("UserLoc", result.UserLoc);
+                alert(result.UserNo + '님 환영합니다.');
                 alert(result.UserName + '님 환영합니다.');
                 alert(result.message);      
                 navigate('/');
