@@ -1,103 +1,108 @@
-import { useState } from 'react';
-import Slider from 'react-slick'; // Import react-slick
-import { Button, Card, CardBody, CardHeader, CardTitle, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Card, CardBody, CardHeader, CardTitle, Table } from 'reactstrap';
 import PetFix from './PetFix';
-import './PetInfo.css';
+import './PetInfo.css'; // CSS 파일을 import 합니다.
 import PetNew from './PetNew';
 
-const PetInfo = ({ petData }) => {
-  console.log("펫인포", petData);
+const PetInfo = ({ petData, fetchPetData }) => {
+  const [pets, setPets] = useState(petData || []);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPet, setCurrentPet] = useState(pets[0] || {});
+  const [isPetNewOpen, setPetNewOpen] = useState(false);
+  const [isPetFixOpen, setPetFixOpen] = useState(false);
+  const navigate = useNavigate(); // 리다이렉트 훅
 
-  const [isFixModalOpen, setIsFixModalOpen] = useState(false);
-  const [isNewModalOpen, setIsNewModalOpen] = useState(false);
-  const [selectedPet, setSelectedPet] = useState(null);
+  useEffect(() => {
+    setPets(petData || []);
+  }, [petData]);
 
-  const toggleFixModal = () => setIsFixModalOpen(!isFixModalOpen);
-  const toggleNewModal = () => setIsNewModalOpen(!isNewModalOpen);
+  useEffect(() => {
+    setCurrentPet(pets[currentIndex] || {});
+  }, [currentIndex, pets]);
 
-  const handleEditPet = (pet) => {
-    setSelectedPet(pet);
-    toggleFixModal();
+  const handleNextPet = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % pets.length);
   };
 
-  const handleDelete = (petId) => {
-    alert(`Delete Pet Info with ID: ${petId}`);
-    // Add delete logic here
+  const handlePreviousPet = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + pets.length) % pets.length);
   };
 
-  // Slider settings
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: true, // Enable arrows for navigation
-  };
-
-  if (!petData || petData.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <div className="card-title-container">
-            <h4>Pet Info</h4>
-            <Button color="primary" onClick={toggleNewModal}>New</Button>
-          </div>
-        </CardHeader>
-        <CardBody>
-          <div>No Pet Data Available</div>
-        </CardBody>
-      </Card>
-    );
-  }
+  const isPetDataEmpty = pets.length === 0;
 
   return (
     <Card>
       <CardHeader>
-        <div className="card-title-container">
-          <h4>Pet Info</h4>
-          <Button color="primary" onClick={toggleNewModal}>New</Button>
-        </div>
+        <CardTitle tag="h4">
+          Pet Info
+          <Button
+            onClick={() => setPetFixOpen(true)}
+            color="primary"
+            size="sm"
+            className="ml-2"
+          >
+            수정하기
+          </Button>
+          <Button
+            onClick={() => setPetNewOpen(true)}
+            color="secondary"
+            size="sm"
+            className="ml-2"
+          >
+            새로 만들기
+          </Button>
+          {isPetNewOpen && (
+            <PetNew
+              isOpen={isPetNewOpen}
+              toggle={() => setPetNewOpen(false)}
+              onSave={fetchPetData}
+            />
+          )}
+          {isPetFixOpen && (
+            <PetFix
+              isOpen={isPetFixOpen}
+              toggle={() => setPetFixOpen(false)}
+              pet={currentPet}
+              onSave={fetchPetData}
+              onDelete={fetchPetData}
+            />
+          )}
+        </CardTitle>
       </CardHeader>
       <CardBody>
-        <Slider {...sliderSettings}>
-          {petData.map(pet => (
-            <Card key={pet.petId} className="mb-3">
-              <CardHeader>
-                <div className="card-header-container">
-                  <CardTitle tag="h5">{pet.petName}</CardTitle>
-                  <div className="card-header-actions">
-                    <Button color="secondary" onClick={() => handleEditPet(pet)}>Fix</Button>
-                    <Button color="danger" onClick={() => handleDelete(pet.petId)}>Del</Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div><strong>Species:</strong> {pet.petSpecies}</div>
-                <div><strong>Birth:</strong> {pet.petBirth}</div>
-                <div><strong>Gender:</strong> {pet.petGender}</div>
-              </CardBody>
-            </Card>
-          ))}
-        </Slider>
-
-        {/* Fix Modal */}
-        {selectedPet && (
-          <Modal isOpen={isFixModalOpen} toggle={toggleFixModal}>
-            <ModalHeader toggle={toggleFixModal}>Edit Pet Info</ModalHeader>
-            <ModalBody>
-              <PetFix petData={selectedPet} toggleModal={toggleFixModal} />
-            </ModalBody>
-          </Modal>
-        )}
-
-        {/* New Modal */}
-        <Modal isOpen={isNewModalOpen} toggle={toggleNewModal}>
-          <ModalHeader toggle={toggleNewModal}>New Pet Info</ModalHeader>
-          <ModalBody>
-            <PetNew toggleModal={toggleNewModal} />
-          </ModalBody>
-        </Modal>
+        <div className="d-flex justify-content-between align-items-center">
+          <Button onClick={handlePreviousPet} size="sm" disabled={pets.length <= 1}>
+            ←
+          </Button>
+          {pets.length > 0 ? (
+            <Table className="pet-info-table">
+              <tbody>
+                <tr>
+                  <td><strong>Name:</strong></td>
+                  <td>{currentPet.petName || ''}</td>
+                </tr>
+                <tr>
+                  <td><strong>Species:</strong></td>
+                  <td>{currentPet.petSpecies || ''}</td>
+                </tr>
+                <tr>
+                  <td><strong>Birth:</strong></td>
+                  <td>{currentPet.petBirth || ''}</td>
+                </tr>
+                <tr>
+                  <td><strong>Gender:</strong></td>
+                  <td>{currentPet.petGender || ''}</td>
+                </tr>
+              </tbody>
+            </Table>
+          ) : (
+            <p>펫이 없습니다. 등록하세요.</p>
+          )}
+          <Button onClick={handleNextPet} size="sm" disabled={pets.length <= 1}>
+            →
+          </Button>
+        </div>
       </CardBody>
     </Card>
   );

@@ -39,7 +39,8 @@ const Login = ({ isOpen, toggle }) => {
                 sessionStorage.setItem("UserNo", result.UserNo); 
                 sessionStorage.setItem("UserId", result.UserId); 
                 sessionStorage.setItem("UserName", result.UserName);
-                sessionStorage.setItem("UserLoc", result.UserLoc);
+                sessionStorage.setItem("UserLoc", result.UserLoc || '없음');
+                
                 alert(result.UserNo + '님 환영합니다.');
                 alert(result.UserName + '님 환영합니다.');
                 alert(result.message);      

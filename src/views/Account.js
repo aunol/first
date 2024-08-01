@@ -8,19 +8,22 @@ import PetInfo from "user/PetInfo";
 
 function Account() {
   const notificationAlert = React.useRef();
-  
+
   const [userData, setUserData] = useState([]);
   const [petData, setPetData] = useState([]);
 
   // Get UserNO from sessionStorage
   const userNo = sessionStorage.getItem('UserNo');
-  console.log('유저넘버'+userNo);
+  console.log('유저넘버' + userNo);
 
-  useEffect(() => {
+  // 사용자 데이터 가져오기
+  const fetchUserData = () => {
     axios.get('http://localhost:8080/userList', { params: { userNo } },
-      {headers: {
-        'Content-Type': 'application/json'
-      }}
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
     )
       .then(userResponse => {
         console.log(userResponse.data);
@@ -28,15 +31,17 @@ function Account() {
       })
       .catch(error => {
         console.error('Error users:', error);
-      })
+      });
+  };
 
-  }, []);
-
-  useEffect(() => {
+  // 펫 데이터 가져오기
+  const fetchPetData = () => {
     axios.get('http://localhost:8080/petList', { params: { userNo } },
-      {headers: {
-        'Content-Type': 'application/json'
-      }}
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
     )
       .then(petResponse => {
         console.log(petResponse.data);
@@ -44,13 +49,13 @@ function Account() {
       })
       .catch(error => {
         console.error('Error pets:', error);
-      })
+      });
+  };
 
-  }, []);
-
-
-
-
+  useEffect(() => {
+    fetchUserData();
+    fetchPetData();
+  }, [userNo]); // userNo가 변경될 때만 실행
 
   return (
     <>
@@ -68,8 +73,7 @@ function Account() {
             <MyInfo /> 
           </Col>
           <Col md={6} xs={12}>
-            {/* PetInfo 컴포넌트에 petData를 전달합니다. */}
-            <PetInfo petData={petData} />
+            <PetInfo petData={petData} fetchPetData={fetchPetData} />
           </Col>
         </Row>
       </div>

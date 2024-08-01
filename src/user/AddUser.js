@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, FormFeedback, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -93,7 +93,7 @@ const AddUser = ({ isOpen, toggle }) => {
     let error = '';
     if (!password) {
       error = '비밀번호를 입력하세요';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,20}$/.test(password)) {
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,20}$/.test(password)) {
       error = '비밀번호는 10~20자이며, 대문자, 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다';
     }
     setErrors((prevErrors) => ({ ...prevErrors, password: error }));
