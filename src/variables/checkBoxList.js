@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Button, Collapse } from 'reactstrap';
+import { Collapse } from 'reactstrap';
 import './CheckBoxList.css'; // 선택된 항목과 관련된 CSS를 추가할 경우
 
 const CheckBoxList = ({ options, onChange }) => {
@@ -28,9 +28,7 @@ const CheckBoxList = ({ options, onChange }) => {
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-        <Button color="link" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? 'Collapse' : 'Expand'}
-        </Button>
+       
         <div className="selected-options-container">
           {Array.from(selectedOptions).map(option => (
             <span key={option} className="selected-option">
