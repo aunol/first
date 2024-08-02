@@ -16,12 +16,9 @@
 
 */
 import Account from "views/Account.js";
-import Community from "views/Community.js";
-import Friends from "views/Friends.js";
+import Community from "views/Community";
 import Home from "views/Home.js";
 import HospitalContainer from "views/HospitalContainer";
-import Neighbor from "views/Neighbor.js";
-import Notifications from "views/Notifications.js";
 
 var dashRoutes = [
 
@@ -35,7 +32,7 @@ var dashRoutes = [
 
   {    
     path: "/home",
-    name: "HOME",
+    name: "POSTING",
     icon: "objects_spaceship",
     component: <Home />,
     layout: "/admin",
@@ -62,21 +59,21 @@ var dashRoutes = [
   //   component: <Notifications />,
   //   layout: "/admin",
   // },
-  {
-    path: "/friends",
-    name: "FRIENDS",
-    icon: "users_single-02",
-    component: <Friends />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/friends",
+  //   name: "FRIENDS",
+  //   icon: "users_single-02",
+  //   component: <Friends />,
+  //   layout: "/admin",
+  // },
   
-  {
-    path: "/neighbor",
-    name: "Neighbor",
-    icon: "design-2_ruler-pencil",
-    component: <Neighbor />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/neighbor",
+  //   name: "Neighbor",
+  //   icon: "design-2_ruler-pencil",
+  //   component: <Neighbor />,
+  //   layout: "/admin",
+  // },
 
   {
     path: "/community",
@@ -84,15 +81,15 @@ var dashRoutes = [
     icon: "media-2_sound-wave",
     component: <Community />,
     layout: "/admin",
-  },
+  }
 
-  {
-    path: "/noti",
-    name: "NOTIFICATION",
-    icon: "files_paper",
-    component: <Notifications />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/noti",
+  //   name: "NOTIFICATION",
+  //   icon: "files_paper",
+  //   component: <Notifications />,
+  //   layout: "/admin",
+  // },
 
   
 

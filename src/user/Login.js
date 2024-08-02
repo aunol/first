@@ -40,10 +40,11 @@ const Login = ({ isOpen, toggle }) => {
                 sessionStorage.setItem("UserId", result.UserId); 
                 sessionStorage.setItem("UserName", result.UserName);
                 sessionStorage.setItem("UserLoc", result.UserLoc || '없음');
+                sessionStorage.setItem("UserTitle", result.UserTitle || 'Hello MyHome');              
                 
-                alert(result.UserNo + '님 환영합니다.');
                 alert(result.UserName + '님 환영합니다.');
-                alert(result.message);      
+                console.log(result.UserNo, result.UserId, result.UserName, result.UserLoc, result.UserTitle);
+
                 navigate('/');
             } else if (result.message === '아이디 혹은 비밀번호를 확인해주세요.') {
                 setLoginCheck(false);

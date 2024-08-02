@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"; // useState와 useEffect를 
 import NotificationAlert from "react-notification-alert";
 import { Col, Row } from "reactstrap";
 import MyInfo from "user/MyInfo";
+import MyPosting from "user/MyPosting";
 import PetInfo from "user/PetInfo";
 
 function Account() {
@@ -71,6 +72,7 @@ function Account() {
         <Row>
           <Col md={6} xs={12}>
             <MyInfo /> 
+            <MyPosting />
           </Col>
           <Col md={6} xs={12}>
             <PetInfo petData={petData} fetchPetData={fetchPetData} />
