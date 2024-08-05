@@ -2,45 +2,45 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const ReadPost = ({ post, onClose }) => {
+const ReadBoard = ({ board, onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(post.title);
-  const loc = post.loc;  
-  const [content, setContent] = useState(post.content);
-  const postNo = post.postNo;
-  const [category, setCategory] = useState(post.category);
+  const [title, setTitle] = useState(board.title);
+  const [loc] = useState(board.loc);  
+  const [content, setContent] = useState(board.content);
+  const [category, setCategory] = useState(board.category);
+  const boardNo = board.boardNo;
 
-  const handleUpdatePost = async () => {
-    console.log(postNo, "수정할거야");
+  const handleUpdateBoard = async () => {
+    console.log(boardNo, "수정할거야");
 
-    const data = {postNo, title, content, category};
+    const data = { boardNo, title, content, category };
     try {
-      const response = await axios.post('http://localhost:8080/updatePost' , data );
+      const response = await axios.post('http://localhost:8080/updateBoard', data);
 
       if (response.status === 200) {
-        onClose(true); // 포스트 목록 새로 고침 필요
+        onClose(true); // 보드 목록 새로 고침 필요
       }
     } catch (error) {
-      console.error('Error updating post:', error);
-      onClose(false); // 포스트 목록 새로 고침 불필요
+      console.error('Error updating board:', error);
+      onClose(false); // 보드 목록 새로 고침 불필요
     }
   };
 
-  const handleDeletePost = async () => {
-    console.log(postNo, "삭제할거야");
-    const data = {postNo};
-    
+  const handleDeleteBoard = async () => {
+    console.log(boardNo, "삭제할거야");
+    const data = { boardNo };
+
     if (window.confirm('정말로 삭제하시겠습니까?')) {
-    try {
-      const response = await axios.post('http://localhost:8080/deletePost', data);
-      if (response.status === 200) {
-        onClose(true); // 포스트 목록 새로 고침 필요
+      try {
+        const response = await axios.post('http://localhost:8080/deleteBoard', data);
+        if (response.status === 200) {
+          onClose(true); // 보드 목록 새로 고침 필요
+        }
+      } catch (error) {
+        console.error('Error deleting board:', error);
+        onClose(false); // 보드 목록 새로 고침 불필요
       }
-    } catch (error) {
-      console.error('Error deleting post:', error);
-      onClose(false); // 포스트 목록 새로 고침 불필요
     }
-  }
   };
 
   const handleEditToggle = () => {
@@ -50,17 +50,17 @@ const ReadPost = ({ post, onClose }) => {
   return (
     <Modal isOpen={true} toggle={() => onClose(false)}>
       <ModalHeader toggle={() => onClose(false)}>
-        {isEditing ? '포스트 수정' : '포스트 상세'}
+        {isEditing ? '보드 수정' : '보드 상세'}
       </ModalHeader>
       <ModalBody>
         <Form>
           <FormGroup row>
-            <Label for="postTitle" sm={3}>제목</Label>
+            <Label for="boardTitle" sm={3}>제목</Label>
             <Col sm={9}>
               {isEditing ? (
                 <Input
                   type="text"
-                  id="postTitle"
+                  id="boardTitle"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
@@ -71,21 +71,19 @@ const ReadPost = ({ post, onClose }) => {
           </FormGroup>
 
           <FormGroup row>
-            <Label for="postLoc" sm={3}>지역</Label>
+            <Label for="boardLoc" sm={3}>지역</Label>
             <Col sm={9}>
-              
-                <p>{loc}</p>
-              
+              <p>{loc}</p>
             </Col>
           </FormGroup>
 
           <FormGroup row>
-            <Label for="postCategory" sm={3}>카테고리</Label>
+            <Label for="boardCategory" sm={3}>카테고리</Label>
             <Col sm={9}>
               {isEditing ? (
                 <Input
                   type="select"
-                  id="postCategory"
+                  id="boardCategory"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
@@ -104,12 +102,12 @@ const ReadPost = ({ post, onClose }) => {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label for="postContent" sm={3}>내용</Label>
+            <Label for="boardContent" sm={3}>내용</Label>
             <Col sm={9}>
               {isEditing ? (
                 <Input
                   type="textarea"
-                  id="postContent"
+                  id="boardContent"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                 />
@@ -123,13 +121,13 @@ const ReadPost = ({ post, onClose }) => {
       <ModalFooter>
         {isEditing ? (
           <>
-            <Button color="primary" onClick={handleUpdatePost}>수정</Button>
+            <Button color="primary" onClick={handleUpdateBoard}>수정</Button>
             <Button color="secondary" onClick={handleEditToggle}>취소</Button>
           </>
         ) : (
           <>
             <Button color="warning" onClick={handleEditToggle}>수정</Button>
-            <Button color="danger" onClick={handleDeletePost}>삭제</Button>
+            <Button color="danger" onClick={handleDeleteBoard}>삭제</Button>
             <Button color="secondary" onClick={() => onClose(false)}>닫기</Button>
           </>
         )}
@@ -138,4 +136,4 @@ const ReadPost = ({ post, onClose }) => {
   );
 };
 
-export default ReadPost;
+export default ReadBoard;
