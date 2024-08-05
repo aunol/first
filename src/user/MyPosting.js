@@ -1,36 +1,20 @@
-import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, CardBody, CardHeader, CardTitle, Collapse, Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import AddPost from './AddPost'; // Import AddPost component
-import ReadPost from './ReadPost'; // Import ReadPost component
+import AddPost from './AddPost';
+import './MyPosting.css'; // CSS 파일을 import
+import ReadPost from './ReadPost';
 
-const MyPosting = () => {
+const MyPosting = ({ postData, fetchPostData }) => {
   const [isPosting, setIsPosting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
 
-  // Fetch posts from an API
-  const fetchPosts = async () => {
-    const userId = localStorage.getItem('userId'); // Replace with the actual user ID
-
-    try {
-      const response = await axios.post('https://api.example.com/postList', { param: userId }); // Replace with your API URL
-      const data = response.data;
-      setPosts(data);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      fetchPosts();
-    }
-  }, [isOpen]);
+  // useEffect(() => {
+  //   fetchPostData(); // Fetch posts when component mounts
+  // }, [fetchPostData]);
 
   const handleToggle = () => setIsOpen(!isOpen);
 
@@ -46,10 +30,46 @@ const MyPosting = () => {
     setIsPosting(true);
   };
 
+  const handleAddPostClose = (isPostAdded) => {
+    setIsPosting(false);
+    if (isPostAdded) {
+      fetchPostData(); // 새로운 포스팅 추가 후 리스트를 다시 가져옴
+    }
+  };
+
+  const handlePostClose = (isPostUpdated) => {
+    setSelectedPost(null);
+    if (isPostUpdated) {
+      fetchPostData(); // 포스팅 수정 또는 삭제 후 리스트를 다시 가져옴
+    }
+  };
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  
+  // 날짜 기준으로 정렬 (가장 최근 것이 위에 오도록)
+  const sortedPosts = postData.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+  const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(postData.length / postsPerPage);
+
+  // 날짜 포맷팅 함수
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const today = new Date();
+    const options = { day: '2-digit', month: '2-digit', year: '2-digit' };
+
+    if (date.toDateString() === today.toDateString()) {
+      // Today
+      return `오늘`;
+    } else if (date > today.setDate(today.getDate() - 7)) {
+      // This week
+      return `${date.toLocaleDateString('en-GB', options)}`;
+    } else {
+      // Older dates
+      return `${date.toLocaleDateString('en-GB', options)}`;
+    }
+  };
 
   return (
     <>
@@ -77,43 +97,48 @@ const MyPosting = () => {
         </CardHeader>
         <CardBody>
           <Collapse isOpen={isOpen}>
-            {posts.length > 0 ? (
+            {currentPosts.length > 0 ? (
               <>
-                <ul>
+                <ul className="post-list">
                   {currentPosts.map((post, index) => (
-                    <li key={index}>
-                      <a
-                        href="#!"
+                    <li key={index} className="post-item">
+                      <span className="post-loc">{post.loc}</span>
+                      <span className="post-category">{post.category}</span>
+                      <span
+                        className="post-title"
                         onClick={() => handlePostClick(post)}
                       >
-                        <strong>{post.title}</strong> - {post.date}
-                      </a>
+                        {post.title}
+                      </span>
+                      <span className="post-date">{formatDate(post.createdAt)}</span>
                     </li>
                   ))}
                 </ul>
-                <Pagination>
-                  <PaginationItem disabled={currentPage === 1}>
-                    <PaginationLink
-                      previous
-                      onClick={() => handlePageChange(currentPage - 1)}
-                    />
-                  </PaginationItem>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <PaginationItem active={index + 1 === currentPage} key={index}>
+                <div className="pagination-container">
+                  <Pagination>
+                    <PaginationItem disabled={currentPage === 1}>
                       <PaginationLink
-                        onClick={() => handlePageChange(index + 1)}
-                      >
-                        {index + 1}
-                      </PaginationLink>
+                        previous
+                        onClick={() => handlePageChange(currentPage - 1)}
+                      />
                     </PaginationItem>
-                  ))}
-                  <PaginationItem disabled={currentPage === totalPages}>
-                    <PaginationLink
-                      next
-                      onClick={() => handlePageChange(currentPage + 1)}
-                    />
-                  </PaginationItem>
-                </Pagination>
+                    {[...Array(totalPages)].map((_, index) => (
+                      <PaginationItem active={index + 1 === currentPage} key={index}>
+                        <PaginationLink
+                          onClick={() => handlePageChange(index + 1)}
+                        >
+                          {index + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem disabled={currentPage === totalPages}>
+                      <PaginationLink
+                        next
+                        onClick={() => handlePageChange(currentPage + 1)}
+                      />
+                    </PaginationItem>
+                  </Pagination>
+                </div>
               </>
             ) : (
               <p>등록된 포스팅이 없습니다.</p>
@@ -122,8 +147,8 @@ const MyPosting = () => {
         </CardBody>
       </Card>
 
-      {isPosting && <AddPost onClose={() => setIsPosting(false)} onPostAdded={fetchPosts} />}
-      {selectedPost && <ReadPost post={selectedPost} onClose={() => setSelectedPost(null)} onPostUpdated={fetchPosts} />}
+      {isPosting && <AddPost onClose={handleAddPostClose} />}
+      {selectedPost && <ReadPost post={selectedPost} onClose={handlePostClose} />}
     </>
   );
 };

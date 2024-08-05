@@ -1,44 +1,44 @@
-import axios from "axios";
-import { useState } from "react";
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import axios from 'axios';
+import { useState } from 'react';
+import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-const AddPost = ({ onClose }) => {
-  const [newPost, setNewPost] = useState({ title: '', category: '', content: '' });
+const AddBoard = ({ onClose }) => {
+  const [newBoard, setNewBoard] = useState({ title: '', category: '', content: '' });
 
   const userNo = sessionStorage.getItem('UserNo');
   const userLoc = sessionStorage.getItem('UserLoc'); // 사용자 위치 가져오기
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setNewPost({ ...newPost, [name]: value });
+    setNewBoard({ ...newBoard, [name]: value });
   };
 
-  const handleSubmitPost = async () => {
+  const handleSubmitBoard = async () => {
     try {
-      const data = { ...newPost, userNo, userLoc };
+      const data = { ...newBoard, userNo, userLoc };
       console.log(data); // 데이터 확인용 로그
-      await axios.post('http://localhost:8080/addPost', data); // API URL 교체 필요
-      onClose(true); // 포스트 목록 새로 고침 필요
+      await axios.post('http://localhost:8080/addBoard', data); // API URL 교체 필요
+      onClose(true); // 보드 목록 새로 고침 필요
     } catch (error) {
-      console.error('포스트 추가 중 오류 발생:', error);
-      onClose(false); // 포스트 목록 새로 고침 불필요
+      console.error('보드 추가 중 오류 발생:', error);
+      onClose(false); // 보드 목록 새로 고침 불필요
     }
   };
 
   return (
     <Modal isOpen={true} toggle={() => onClose(false)}>
       <ModalHeader toggle={() => onClose(false)}>
-        새 포스트 추가
+        새 보드 추가
       </ModalHeader>
       <ModalBody>
         <Form>
           <FormGroup>
-            <Label for="postTitle">제목</Label>
+            <Label for="boardTitle">제목</Label>
             <Input
               type="text"
-              id="postTitle"
+              id="boardTitle"
               name="title"
-              value={newPost.title}
+              value={newBoard.title}
               onChange={handleFormChange}
               placeholder="제목을 입력하세요"
             />
@@ -54,12 +54,12 @@ const AddPost = ({ onClose }) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="postCategory">카테고리</Label>
+            <Label for="boardCategory">카테고리</Label>
             <Input
               type="select"
-              id="postCategory"
+              id="boardCategory"
               name="category"
-              value={newPost.category}
+              value={newBoard.category}
               onChange={handleFormChange}
             >
               <option value="">카테고리를 선택하세요</option>
@@ -74,12 +74,12 @@ const AddPost = ({ onClose }) => {
             </Input>
           </FormGroup>
           <FormGroup>
-            <Label for="postContent">내용</Label>
+            <Label for="boardContent">내용</Label>
             <Input
               type="textarea"
-              id="postContent"
+              id="boardContent"
               name="content"
-              value={newPost.content}
+              value={newBoard.content}
               onChange={handleFormChange}
               placeholder="내용을 입력하세요"
             />
@@ -87,11 +87,11 @@ const AddPost = ({ onClose }) => {
         </Form>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={handleSubmitPost}>제출</Button>
+        <Button color="primary" onClick={handleSubmitBoard}>제출</Button>
         <Button color="secondary" onClick={() => onClose(false)}>취소</Button>
       </ModalFooter>
     </Modal>
   );
 };
 
-export default AddPost;
+export default AddBoard;
