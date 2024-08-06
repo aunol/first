@@ -71,13 +71,6 @@ const ReadBoard = ({ board, onClose }) => {
           </FormGroup>
 
           <FormGroup row>
-            <Label for="boardLoc" sm={3}>지역</Label>
-            <Col sm={9}>
-              <p>{loc}</p>
-            </Col>
-          </FormGroup>
-
-          <FormGroup row>
             <Label for="boardCategory" sm={3}>카테고리</Label>
             <Col sm={9}>
               {isEditing ? (

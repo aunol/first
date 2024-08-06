@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, Card, CardBody, CardHeader, CardTitle, Collapse, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import './MyBoarding.css'; // CSS 파일을 import
 import AddBoard from './AddBoard'; // AddBoard component
 import ReadBoard from './ReadBoard'; // ReadBoard component
 
@@ -93,7 +94,7 @@ const MyBoarding = ({ boardData, fetchBoardData }) => {
                 <ul className="board-list">
                   {currentBoards.map((board, index) => (
                     <li key={index} className="board-item">
-                      <span className="board-loc">{board.loc}</span>
+                      
                       <span className="board-category">{board.category}</span>
                       <span
                         className="board-title"

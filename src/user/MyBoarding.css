@@ -1,0 +1,38 @@
+.board-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .board-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .board-loc {
+    font-size: 0.9rem;
+    color: #888;
+  }
+  
+  .board-category {
+    font-size: 0.9rem;
+    color: #888;
+  }
+  
+  .board-title {
+    font-weight: bold;
+    text-align: center; /* 제목을 가운데 정렬 */
+  }
+  
+  .board-date {
+    color: #777;
+    font-size: 0.9rem;
+  }
+  
+  .pagination-container {
+    display: flex;
+    justify-content: center; /* 페이지 네비게이션을 가운데 정렬 */
+    margin-top: 20px;
+  }
+  

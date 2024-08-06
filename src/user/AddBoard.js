@@ -6,7 +6,7 @@ const AddBoard = ({ onClose }) => {
   const [newBoard, setNewBoard] = useState({ title: '', category: '', content: '' });
 
   const userNo = sessionStorage.getItem('UserNo');
-  const userLoc = sessionStorage.getItem('UserLoc'); // 사용자 위치 가져오기
+  
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -15,7 +15,7 @@ const AddBoard = ({ onClose }) => {
 
   const handleSubmitBoard = async () => {
     try {
-      const data = { ...newBoard, userNo, userLoc };
+      const data = { ...newBoard, userNo};
       console.log(data); // 데이터 확인용 로그
       await axios.post('http://localhost:8080/addBoard', data); // API URL 교체 필요
       onClose(true); // 보드 목록 새로 고침 필요
@@ -43,16 +43,7 @@ const AddBoard = ({ onClose }) => {
               placeholder="제목을 입력하세요"
             />
           </FormGroup>
-          <FormGroup>
-            <Label for="userLoc">사용자 위치</Label>
-            <Input
-              type="text"
-              id="userLoc"
-              name="userLoc"
-              value={userLoc || ''} // userLoc이 없을 경우 빈 문자열 설정
-              readOnly
-            />
-          </FormGroup>
+          
           <FormGroup>
             <Label for="boardCategory">카테고리</Label>
             <Input

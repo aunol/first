@@ -115,12 +115,13 @@ function Account() {
       <div className="content">
         <NotificationAlert ref={notificationAlert} />
         <Row>
-          <Col md={6} xs={12}>
+          <Col md={4} xs={12}>
             <MyInfo /> 
-            <MyPosting postData={postData} fetchPostData={fetchPostData}/>
-          </Col>
-          <Col md={6} xs={12}>
             <PetInfo petData={petData} fetchPetData={fetchPetData}/>
+            
+          </Col>
+          <Col md={8} xs={12}>
+            <MyPosting postData={postData} fetchPostData={fetchPostData}/>
             <MyBoarding boardData={boardData} fetchBoardData={fetchBoardData}/>
           </Col>
         </Row>
