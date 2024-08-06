@@ -33,7 +33,7 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/admin/*" element={<AdminLayout />} />
-      <Route path="*" element={<Navigate to="/admin/home" replace />} />
+      <Route path="*" element={<Navigate to="/admin/hospital" replace />} />
     </Routes>
   </BrowserRouter>
 );

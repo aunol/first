@@ -22,24 +22,24 @@ import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 import { useState } from 'react';
 import {
-    Card,
-    CardBody,
-    CardHeader,
-    CardTitle,
-    Col,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText,
-    Pagination,
-    PaginationItem,
-    PaginationLink,
-    Row,
-    Table,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Col,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Row,
+  Table,
 } from 'reactstrap';
 
 
@@ -146,10 +146,10 @@ const Neighbor = () => {
         <Table responsive>
           <thead className="text-primary">
             <tr>
-              <th style={{ width: '15%', textAlign: "center"}}>작성자</th>
-              <th style={{ width: '55%', textAlign: "center"}}>제목</th>
-              <th style={{ width: '15%', textAlign: "center"}} >날짜</th>
-              <th style={{ width: '15%', textAlign: "center"}} >조회수</th>
+              <th style={{ width: '20%', textAlign: "center"}}>작성자</th>
+              <th style={{ width: '60%', textAlign: "center"}}>제목</th>
+              <th style={{ width: '20%', textAlign: "center"}} >날짜</th>
+              
             </tr>
           </thead>
           <tbody>
