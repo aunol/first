@@ -115,7 +115,7 @@ function Account() {
       <div className="content">
         <NotificationAlert ref={notificationAlert} />
         <Row>
-          <Col md={4} xs={12}>
+          <Col md={4} xs={12} style={{ minWidth: '350px' }}>
             <MyInfo /> 
             <PetInfo petData={petData} fetchPetData={fetchPetData}/>
             

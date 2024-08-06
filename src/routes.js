@@ -16,9 +16,9 @@
 
 */
 import Account from "views/Account.js";
-import Community from "views/Community";
-import Home from "views/Home.js";
+import Boarding from "views/Boarding";
 import HospitalContainer from "views/HospitalContainer";
+import Posting from "views/Posting";
 
 var dashRoutes = [
 
@@ -28,15 +28,7 @@ var dashRoutes = [
    component: <Account />,
    layout: "/admin",
 
-   }, 
-
-  {    
-    path: "/home",
-    name: "POSTING",
-    icon: "objects_spaceship",
-    component: <Home />,
-    layout: "/admin",
-  },
+   },  
   
   {
     path: "/hospital",
@@ -45,6 +37,23 @@ var dashRoutes = [
     component: <HospitalContainer />,
     layout: "/admin",
   },
+
+  {    
+    path: "/posting",
+    name: "POSTING",
+    icon: "objects_spaceship",
+    component: <Posting />,
+    layout: "/admin",
+  },
+
+  {
+    path: "/boarding",
+    name: "BOARD",
+    icon: "media-2_sound-wave",
+    component: <Boarding />,
+    layout: "/admin",
+  }
+
   // {
   //   path: "/icons",
   //   name: "Icons",
@@ -75,14 +84,7 @@ var dashRoutes = [
   //   layout: "/admin",
   // },
 
-  {
-    path: "/community",
-    name: "COMMUNITY",
-    icon: "media-2_sound-wave",
-    component: <Community />,
-    layout: "/admin",
-  }
-
+ 
   // {
   //   path: "/noti",
   //   name: "NOTIFICATION",
