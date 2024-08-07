@@ -10,7 +10,7 @@ const PostingList = ({ postData, userLoc }) => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const categoryOptions = ['전체', '강아지', '고양이', '특수포유류', '파충류', '조류', '어류', '양서류'];
+  const categoryOptions = ['전체', '강아지', '고양이', '특수포유류', '파충류', '조류', '어류', '양서류', 'etc'];
 
   useEffect(() => {
     filterPosts();
@@ -31,6 +31,7 @@ const PostingList = ({ postData, userLoc }) => {
       data = data.filter(post => 
         post.title.includes(searchTerm) ||
         post.userName.includes(searchTerm) ||
+        post.content.includes(searchTerm) ||
         new Date(post.createdAt).toLocaleDateString().includes(searchTerm)
       );
     }
@@ -84,7 +85,7 @@ const PostingList = ({ postData, userLoc }) => {
                 <tr key={post.postNo} onClick={() => handleTitleClick(post)} style={{ cursor: 'pointer' }}>
                   <td style={{ textAlign: 'center' }}>{post.userName}</td>
                   <td style={{ textAlign: 'center' }}>{post.title}</td>
-                  <td style={{ textAlign: 'center' }}>{new Date(post.createdAt).toLocaleDateString()}</td>
+                  <td style={{ textAlign: 'center' }}>{post.loc}</td>
                 </tr>
               ))}
             </tbody>

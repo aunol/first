@@ -1,9 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { Card, CardBody, CardHeader, Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
-import CheckBoxList from 'variables/checkBoxList';
-import Hour24 from 'variables/hour24';
-import Kakao from 'variables/kakao'; // 올바른 경로 확인
+import { Button, DropdownItem, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import KakaoMap from 'variables/KakaoMap';
 
 export const hour24Rows = [
   { id: 0, name: '24시간' },
@@ -19,29 +17,33 @@ export const speciesRows = [
   { id: 5, name: '어류' }
 ];
 
+export const locationRows = [
+  '서울', '부산', '인천', '광주', '대구', '대전',
+  '경기도', '강원도', '충청북도', '충청남도', '전라북도',
+  '전라남도', '경상북도', '경상남도', '제주도'
+];
+
 const Hospital = ({ hospitals }) => {
-  const [dropdownOpen, setDropdownOpen] = useState({
-    hospitalList: false,
-    checkBoxList: false,
-    hour24: false
-  });
+  const [modalOpen, setModalOpen] = useState(false);
   const [selectedHours, setSelectedHours] = useState(new Set());
   const [selectedSpecies, setSelectedSpecies] = useState(new Set());
+  const [selectedRegions, setSelectedRegions] = useState(new Set());
   const [selectedHospital, setSelectedHospital] = useState(null);
 
-  const toggleDropdown = (dropdown) => {
-    setDropdownOpen({
-      ...dropdownOpen,
-      [dropdown]: !dropdownOpen[dropdown]
-    });
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
   };
 
-  const handleHourChange = (selectedNames) => {
-    setSelectedHours(new Set(selectedNames));
+  const handleHourChange = (selectedHours) => {
+    setSelectedHours(selectedHours);
   };
 
-  const handleSpeciesChange = (selectedNames) => {
-    setSelectedSpecies(new Set(selectedNames));
+  const handleSpeciesChange = (selectedSpecies) => {
+    setSelectedSpecies(selectedSpecies);
+  };
+
+  const handleRegionChange = (selectedRegions) => {
+    setSelectedRegions(selectedRegions);
   };
 
   const handleHospitalSelect = (hospital) => {
@@ -55,8 +57,11 @@ const Hospital = ({ hospitals }) => {
         
       const isSpeciesMatch = selectedSpecies.size === 0 || 
         Array.from(selectedSpecies).some(species => hospital.hospitalSpecies.includes(species));
+        
+      const isRegionMatch = selectedRegions.size === 0 || 
+        Array.from(selectedRegions).some(region => hospital.hospitalAddr.includes(region));
       
-      return isHourMatch && isSpeciesMatch;
+      return isHourMatch && isSpeciesMatch && isRegionMatch;
     });
   };
 
@@ -64,67 +69,119 @@ const Hospital = ({ hospitals }) => {
     <div style={{ padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
         <span style={{ flex: '1', margin: '0 5px' }}>
-          {/* Empty span */}
-        </span>
-        <span style={{ flex: '1', margin: '0 5px' }}>
-          {/* <Dropdown isOpen={dropdownOpen.hospitalList} toggle={() => toggleDropdown('hospitalList')}>
-            <DropdownToggle color="link" style={{ display: 'inline-block', textAlign: 'center', backgroundColor: '#343a40', color: 'white', width: '100%' }}>
-              Hospital List
-            </DropdownToggle>
-            <DropdownMenu right style={{ minWidth: '300px', marginTop: '5px' }}>
-              <Card>
-                <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
-                <CardBody style={{ paddingTop: '2px', paddingBottom: '2px', height: '13cm' }}>
-                  <HospitalList
-                    hospitals={filterHospitals()}
-                    onHospitalClick={handleHospitalSelect}
-                    selectedHospital={selectedHospital}
-                  />
-                </CardBody>
-              </Card>
-            </DropdownMenu>
-          </Dropdown> */}
-        </span>
-        <span style={{ flex: '1', margin: '0 5px' }}>
-          <Dropdown isOpen={dropdownOpen.checkBoxList} toggle={() => toggleDropdown('checkBoxList')}>
-            <DropdownToggle color="link" style={{ display: 'inline-block', textAlign: 'center', backgroundColor: '#343a40', color: 'white', width: '100%' }}>
-              CheckBox List
-            </DropdownToggle>
-            <DropdownMenu right style={{ minWidth: '300px', marginTop: '5px' }}>
-              <Card>
-                <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
-                <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
-                  <CheckBoxList 
-                    options={speciesRows}
-                    onChange={handleSpeciesChange}
-                  />
-                </CardBody>
-              </Card>
-            </DropdownMenu>
-          </Dropdown>
-        </span>
-        <span style={{ flex: '1', margin: '0 5px' }}>
-          <Dropdown isOpen={dropdownOpen.hour24} toggle={() => toggleDropdown('hour24')}>
-            <DropdownToggle color="link" style={{ display: 'inline-block', textAlign: 'center', backgroundColor: '#343a40', color: 'white', width: '100%' }}>
-              Hour24
-            </DropdownToggle>
-            <DropdownMenu right style={{ minWidth: '300px', marginTop: '5px' }}>
-              <Card>
-                <CardHeader style={{ paddingTop: '5px', paddingBottom: '2px' }} />
-                <CardBody style={{ paddingTop: '2px', paddingBottom: '2px' }}>
-                  <Hour24
-                    options={hour24Rows}
-                    onChange={handleHourChange}
-                  />
-                </CardBody>
-              </Card>
-            </DropdownMenu>
-          </Dropdown>
+          <Button color="primary" onClick={toggleModal}>필터 및 병원 리스트</Button>
         </span>
       </div>
-      <div style={{ position: 'relative', overflow: 'hidden', height: '600px', flexGrow: 1 }}>
-        <Kakao hospitals={filterHospitals()} selectedHospital={selectedHospital} onHospitalSelect={handleHospitalSelect} />
-      </div>
+
+      <div style={{ 
+  position: 'relative', 
+  overflow: 'hidden', 
+  width: 'calc(100% - 4px)', 
+  height: '800px', 
+  flexGrow: 1, 
+  marginRight: '4px' 
+}}>
+  <KakaoMap hospitals={filterHospitals()} selectedHospital={selectedHospital} onHospitalSelect={handleHospitalSelect} />
+</div>
+
+
+      <Modal isOpen={modalOpen} toggle={toggleModal} size="lg" style={{ width: '100%', height: '100%' }} >
+        <ModalHeader toggle={toggleModal}>필터 및 병원 리스트</ModalHeader>
+        <ModalBody>
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1, paddingRight: '10px' }}>
+              <FormGroup>
+                <Label>진료시간</Label>
+                {hour24Rows.map(hour => (
+                  <div key={hour.id}>
+                    <Input
+                      type="checkbox"
+                      value={hour.name}
+                      checked={selectedHours.has(hour.name)}
+                      onChange={e => {
+                        const { value, checked } = e.target;
+                        const updatedSet = new Set(selectedHours);
+                        if (checked) {
+                          updatedSet.add(value);
+                        } else {
+                          updatedSet.delete(value);
+                        }
+                        handleHourChange(updatedSet);
+                      }}
+                    />{' '}
+                    {hour.name}
+                  </div>
+                ))}
+              </FormGroup>
+
+              <FormGroup>
+                <Label>진료동물</Label>
+                {speciesRows.map(species => (
+                  <div key={species.id}>
+                    <Input
+                      type="checkbox"
+                      value={species.name}
+                      checked={selectedSpecies.has(species.name)}
+                      onChange={e => {
+                        const { value, checked } = e.target;
+                        const updatedSet = new Set(selectedSpecies);
+                        if (checked) {
+                          updatedSet.add(value);
+                        } else {
+                          updatedSet.delete(value);
+                        }
+                        handleSpeciesChange(updatedSet);
+                      }}
+                    />{' '}
+                    {species.name}
+                  </div>
+                ))}
+              </FormGroup>
+            </div>
+            <div style={{ flex: 1, paddingRight: '10px' }}>
+              <FormGroup>
+                <Label>지역</Label>
+                {locationRows.map(location => (
+                  <div key={location}>
+                    <Input
+                      type="checkbox"
+                      value={location}
+                      checked={selectedRegions.has(location)}
+                      onChange={e => {
+                        const { value, checked } = e.target;
+                        const updatedSet = new Set(selectedRegions);
+                        if (checked) {
+                          updatedSet.add(value);
+                        } else {
+                          updatedSet.delete(value);
+                        }
+                        handleRegionChange(updatedSet);
+                      }}
+                    />{' '}
+                    {location}
+                  </div>
+                ))}
+              </FormGroup>
+            </div>
+            <div style={{ flex: 2, paddingLeft: '10px', maxHeight: '400px', overflowY: 'auto' }}>
+              <h5>병원 리스트</h5>
+              {filterHospitals().length > 0 ? (
+                filterHospitals().map(hospital => (
+                  <DropdownItem
+                    key={hospital.hospitalNo}
+                    onClick={() => handleHospitalSelect(hospital)}
+                    active={selectedHospital && selectedHospital.hospitalNo === hospital.hospitalNo}
+                  >
+                    {hospital.hospitalName}
+                  </DropdownItem>
+                ))
+              ) : (
+                <DropdownItem disabled>리스트에 병원이 없습니다.</DropdownItem>
+              )}
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

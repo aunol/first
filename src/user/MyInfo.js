@@ -56,9 +56,9 @@ const MyInfo = () => {
       </CardHeader>
       <CardBody> 
         {/* Display the UserId */}
-        <div><strong>UserId:</strong> {getDefaultValue(userId)}</div>
-        <div><strong>UserName:</strong> {getDefaultValue(userName)}</div>
-        <div><strong>UserLoc:</strong> {getDefaultValue(userLoc)}  </div>
+        <div><strong>아이디 : </strong> {getDefaultValue(userId)}</div>
+        <div><strong>닉네임 : </strong> {getDefaultValue(userName)}</div>
+        <div><strong>지역 : </strong> {getDefaultValue(userLoc)}  </div>
         
       </CardBody>
     </Card>
