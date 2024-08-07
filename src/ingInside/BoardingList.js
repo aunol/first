@@ -24,6 +24,7 @@ const BoardingList = ({ boardData }) => {
         filtered = filtered.filter(filtered => 
           filtered.title.includes(searchTerm) ||
           filtered.userName.includes(searchTerm) ||
+          filtered.content.includes(searchTerm) ||
           new Date(filtered.createdAt).toLocaleDateString().includes(searchTerm)
         );
       }
@@ -92,7 +93,7 @@ const BoardingList = ({ boardData }) => {
                 <tr key={board.boardNo} onClick={() => handleBoardClick(board)} style={{ cursor: 'pointer' }}>
                   <td style={{ textAlign: 'center' }}>{board.userName}</td>
                   <td style={{ textAlign: 'center' }}>{board.title}</td>
-                  <td style={{ textAlign: 'center' }}>{new Date(board.createdAt).toLocaleDateString()}</td>
+                  <td style={{ textAlign: 'center' }}>{board.category}</td>
                 </tr>
               ))}
             </tbody>

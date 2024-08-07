@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 const AddBoard = ({ onClose }) => {
   const [newBoard, setNewBoard] = useState({ title: '', category: '', content: '' });
+  const [showAlert, setShowAlert] = useState(false);
 
   const userNo = sessionStorage.getItem('UserNo');
   
@@ -14,6 +15,13 @@ const AddBoard = ({ onClose }) => {
   };
 
   const handleSubmitBoard = async () => {
+    const {title, category,content} = newBoard;
+    if (!title || !category || !content) {
+      setShowAlert(true);
+      return;
+    }
+
+
     try {
       const data = { ...newBoard, userNo};
       console.log(data); // 데이터 확인용 로그
@@ -31,6 +39,7 @@ const AddBoard = ({ onClose }) => {
         새 보드 추가
       </ModalHeader>
       <ModalBody>
+      {showAlert && <Alert color="danger">모든 필드를 채워야 합니다!</Alert>}
         <Form>
           <FormGroup>
             <Label for="boardTitle">제목</Label>

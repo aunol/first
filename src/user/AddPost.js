@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 const AddPost = ({ onClose }) => {
   const [newPost, setNewPost] = useState({ title: '', category: '', content: '' });
+  const [showAlert, setShowAlert] = useState(false);
 
   const userNo = sessionStorage.getItem('UserNo');
   const userLoc = sessionStorage.getItem('UserLoc'); // 사용자 위치 가져오기
@@ -14,6 +15,12 @@ const AddPost = ({ onClose }) => {
   };
 
   const handleSubmitPost = async () => {
+    const { title, category, content } = newPost;
+    if (!title || !category || !content) {
+      setShowAlert(true);
+      return;
+    }
+
     try {
       const data = { ...newPost, userNo, userLoc };
       console.log(data); // 데이터 확인용 로그
@@ -31,6 +38,7 @@ const AddPost = ({ onClose }) => {
         새 포스트 추가
       </ModalHeader>
       <ModalBody>
+      {showAlert && <Alert color="danger">모든 필드를 채워야 합니다!</Alert>}
         <Form>
           <FormGroup>
             <Label for="postTitle">제목</Label>
@@ -62,8 +70,7 @@ const AddPost = ({ onClose }) => {
               value={newPost.category}
               onChange={handleFormChange}
             >
-              <option value="">카테고리를 선택하세요</option>
-              <option value="etc">기타</option>
+              <option value="">카테고리를 선택하세요</option>             
               <option value="강아지">강아지</option>
               <option value="고양이">고양이</option>
               <option value="특수포유류">특수포유류</option>
