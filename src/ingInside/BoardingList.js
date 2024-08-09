@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Card, CardBody, CardHeader, Input, Modal, ModalBody, ModalHeader, Pagination, PaginationItem, PaginationLink, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Input, Pagination, PaginationItem, PaginationLink, Table } from 'reactstrap';
+import BoardDetail from './BoardDetail';
 
 const BoardingList = ({ boardData }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,6 +10,7 @@ const BoardingList = ({ boardData }) => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [filteredBoards, setFilteredBoards] = useState([]); // 필터된 게시물
   const itemsPerPage = 10; // 페이지 당 아이템 수
+  const [currentIndex, setCurrentIndex] = useState(null); // 현재 게시물 인덱스
 
   const categoryOptions = ['전체', '강아지', '고양이', '특수포유류', '파충류', '조류', '어류', '양서류'];
 
@@ -21,21 +23,27 @@ const BoardingList = ({ boardData }) => {
       }
       
       if (searchTerm) {
-        filtered = filtered.filter(filtered => 
-          filtered.title.includes(searchTerm) ||
-          filtered.userName.includes(searchTerm) ||
-          filtered.content.includes(searchTerm) ||
-          new Date(filtered.createdAt).toLocaleDateString().includes(searchTerm)
+        filtered = filtered.filter(board => 
+          board.title.includes(searchTerm) ||
+          board.userName.includes(searchTerm) ||
+          board.content.includes(searchTerm) ||
+          new Date(board.createdAt).toLocaleDateString().includes(searchTerm)
         );
       }
   
-      
       setFilteredBoards(filtered);
       setCurrentPage(1); // 필터 변경 시 페이지를 첫 페이지로 초기화
     };
 
     filterBoards();
   }, [boardData, filterCategory, searchTerm]);
+
+  useEffect(() => {
+    if (selectedBoard) {
+      const index = filteredBoards.findIndex(board => board.boardNo === selectedBoard.boardNo);
+      setCurrentIndex(index);
+    }
+  }, [selectedBoard, filteredBoards]);
 
   const totalPages = Math.ceil(filteredBoards.length / itemsPerPage);
   const currentItems = filteredBoards.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -52,6 +60,11 @@ const BoardingList = ({ boardData }) => {
   const handlePopupClose = () => {
     setShowPopup(false);
     setSelectedBoard(null);
+  };
+
+  const handlePostChange = (newIndex) => {
+    const newBoard = filteredBoards[newIndex];
+    setSelectedBoard(newBoard);
   };
 
   return (
@@ -83,9 +96,9 @@ const BoardingList = ({ boardData }) => {
           <Table>
             <thead className="text-primary" style={{ borderBottom: '2px solid #dee2e6' }}>
               <tr>
-                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}></th>
-                <th style={{ width: '60%', textAlign: 'center', height: '30px' }}></th>
-                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}></th>
+                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}>작성자</th>
+                <th style={{ width: '60%', textAlign: 'center', height: '30px' }}>제목</th>
+                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}>카테고리</th>
               </tr>
             </thead>
             <tbody>
@@ -124,16 +137,13 @@ const BoardingList = ({ boardData }) => {
       </Card>
 
       {selectedBoard && (
-        <Modal isOpen={showPopup} toggle={handlePopupClose}>
-          <ModalHeader toggle={handlePopupClose}>{selectedBoard.title}</ModalHeader>
-          <ModalBody>
-            <p><strong>작성자:</strong> {selectedBoard.userName}</p>
-            <p><strong>Species:</strong> {selectedBoard.category}</p>
-            <p><strong>작성일:</strong> {new Date(selectedBoard.createdAt).toLocaleDateString()}</p>
-            <p>{selectedBoard.content}</p>
-            {selectedBoard.imageUrl && <img src={selectedBoard.imageUrl} alt={selectedBoard.title} style={{ maxWidth: '100%' }} />}
-          </ModalBody>
-        </Modal>
+        <BoardDetail 
+          selectedBoard={selectedBoard} 
+          handlePopupClose={handlePopupClose} 
+          currentIndex={currentIndex} 
+          totalBoards={filteredBoards.length} 
+          onBoardChange={handlePostChange}
+        />
       )}
     </>
   );

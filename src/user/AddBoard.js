@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 const AddBoard = ({ onClose }) => {
-  const [newBoard, setNewBoard] = useState({ title: '', category: '', content: '' });
+  const [newBoard, setNewBoard] = useState({ title: '', category: '', content: '', imgFile: null });
   const [showAlert, setShowAlert] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const userNo = sessionStorage.getItem('UserNo');
   
@@ -14,6 +15,29 @@ const AddBoard = ({ onClose }) => {
     setNewBoard({ ...newBoard, [name]: value });
   };
 
+  // 이미지 파일 선택 핸들러
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewBoard({ ...newBoard, imgFile: file });
+      
+      // 이미지 미리보기 설정
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // 이미지 미리보기 삭제 핸들러
+  const handleRemoveImage = () => {
+    setNewBoard({ ...newBoard, imgFile: null });
+    setImagePreview(null);
+  };
+
+
+
   const handleSubmitBoard = async () => {
     const {title, category,content} = newBoard;
     if (!title || !category || !content) {
@@ -21,11 +45,21 @@ const AddBoard = ({ onClose }) => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('title', newBoard.title);
+    formData.append('category', newBoard.category);
+    formData.append('content', newBoard.content);
+    formData.append('userNo', userNo);
+    
+    if (newBoard.imgFile) {
+      formData.append('image', newBoard.imgFile);
+    }
+
 
     try {
-      const data = { ...newBoard, userNo};
-      console.log(data); // 데이터 확인용 로그
-      await axios.post('http://localhost:8080/addBoard', data); // API URL 교체 필요
+      console.log(formData); // 데이터 확인용 로그
+    
+      await axios.post('http://localhost:8080/addBoard', formData); // API URL 교체 필요
       onClose(true); // 보드 목록 새로 고침 필요
     } catch (error) {
       console.error('보드 추가 중 오류 발생:', error);
@@ -73,6 +107,7 @@ const AddBoard = ({ onClose }) => {
               <option value="조류">조류</option>
             </Input>
           </FormGroup>
+
           <FormGroup>
             <Label for="boardContent">내용</Label>
             <Input
@@ -84,6 +119,37 @@ const AddBoard = ({ onClose }) => {
               placeholder="내용을 입력하세요"
             />
           </FormGroup>
+
+          <FormGroup>
+            <Label for="postImage">이미지 업로드</Label>
+            <div className="d-flex align-items-center">
+              <Button color="primary" onClick={() => document.getElementById('postImage').click()}>
+                이미지 선택
+              </Button>
+              <Input 
+                type="file" 
+                id="postImage" 
+                name="image"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+              {imagePreview && (
+                <div className="position-relative mt-2">
+                  <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} />
+                  <Button
+                    onClick={handleRemoveImage}
+                    className="position-absolute"
+                    style={{ top: '0', right: '0', zIndex: 1 }}
+                    color="danger"
+                  >
+                    X
+                  </Button>
+                </div>
+              )}
+            </div>
+          </FormGroup>
+
+
         </Form>
       </ModalBody>
       <ModalFooter>

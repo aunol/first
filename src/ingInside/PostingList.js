@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Button, Card, CardBody, CardHeader, Input, Modal, ModalBody, ModalHeader, Pagination, PaginationItem, PaginationLink, Table } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Input, Pagination, PaginationItem, PaginationLink, Table } from 'reactstrap';
+import PostDetail from './PostDetail';
 
 const PostingList = ({ postData, userLoc }) => {
   const [filteredData, setFilteredData] = useState(postData);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostIndex, setSelectedPostIndex] = useState(null); // 현재 선택된 포스팅의 인덱스
   const [showUserLocOnly, setShowUserLocOnly] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,52 +39,67 @@ const PostingList = ({ postData, userLoc }) => {
     }
 
     setFilteredData(data);
-    setCurrentPage(1); // 필터가 변경될 때 페이지를 초기화합니다.
+    setCurrentPage(1);
   };
+
+  const totalPages = Math.ceil(filteredData.length / postsPerPage);
+  const currentPosts = filteredData.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const handleTitleClick = (post) => setSelectedPost(post);
+  const handlePostClick = (post, index) => {
+    setSelectedPost(post);
+    setSelectedPostIndex(index);
+  };
 
-  const handleModalClose = () => setSelectedPost(null);
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredData.slice(indexOfFirstPost, indexOfLastPost);
-
-  const totalPages = Math.ceil(filteredData.length / postsPerPage);
+  const handleModalClose = () => {
+    setSelectedPost(null);
+    setSelectedPostIndex(null);
+  };
 
   return (
     <>
       <Card>
         <CardHeader>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button onClick={() => setShowUserLocOnly(!showUserLocOnly)}>
-            {showUserLocOnly ? (userLoc || '없음') : '전체'}
-          </Button>
+            <Button onClick={() => setShowUserLocOnly(!showUserLocOnly)}>
+              {showUserLocOnly ? (userLoc || '없음') : '전체'}
+            </Button>
 
-            <Input type="select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} style={{ width: '150px' }}>
+            <Input 
+              type="select" 
+              value={selectedCategory} 
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              style={{ width: '150px' }}
+            >
               {categoryOptions.map(option => (
                 <option key={option} value={option}>{option}</option>
               ))}
             </Input>
-            <Input type="text" placeholder="검색" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ width: '300px' }} />
+
+            <Input
+              type="text"
+              placeholder="검색"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ width: '300px' }}
+            />
           </div>
         </CardHeader>
         <CardBody>
           <Table>
             <thead className="text-primary" style={{ borderBottom: '2px solid #dee2e6' }}>
               <tr>
-                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}></th>
-                <th style={{ width: '60%', textAlign: 'center', height: '30px' }}></th>
-                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}></th>
+                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}>작성자</th>
+                <th style={{ width: '60%', textAlign: 'center', height: '30px' }}>제목</th>
+                <th style={{ width: '20%', textAlign: 'center', height: '30px' }}>지역</th>
               </tr>
             </thead>
             <tbody>
-              {currentPosts.map(post => (
-                <tr key={post.postNo} onClick={() => handleTitleClick(post)} style={{ cursor: 'pointer' }}>
+              {currentPosts.map((post, index) => (
+                <tr key={post.postNo} onClick={() => handlePostClick(post, (currentPage - 1) * postsPerPage + index)} style={{ cursor: 'pointer' }}>
                   <td style={{ textAlign: 'center' }}>{post.userName}</td>
                   <td style={{ textAlign: 'center' }}>{post.title}</td>
                   <td style={{ textAlign: 'center' }}>{post.loc}</td>
@@ -116,16 +133,17 @@ const PostingList = ({ postData, userLoc }) => {
       </Card>
 
       {selectedPost && (
-        <Modal isOpen={true} toggle={handleModalClose}>
-          <ModalHeader toggle={handleModalClose}>{selectedPost.title}</ModalHeader>
-          <ModalBody>
-            <p><strong>작성자:</strong> {selectedPost.userName}</p>
-            <p><strong>지역:</strong> {selectedPost.loc}</p>
-            <p><strong>날짜:</strong> {new Date(selectedPost.createdAt).toLocaleDateString()}</p>
-            <p>{selectedPost.content}</p>
-            {selectedPost.imageUrl && <img src={selectedPost.imageUrl} alt={selectedPost.title} style={{ maxWidth: '100%' }} />}
-          </ModalBody>
-        </Modal>
+        <PostDetail
+          selectedPost={selectedPost}
+          handleModalClose={handleModalClose}
+          currentIndex={selectedPostIndex}
+          totalPosts={filteredData.length}
+          onPostChange={(index) => {
+            const newPost = filteredData[index];
+            setSelectedPost(newPost);
+            setSelectedPostIndex(index);
+          }}
+        />
       )}
     </>
   );

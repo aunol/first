@@ -1,21 +1,68 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 const ReadBoard = ({ board, onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(board.title);
-  const [loc] = useState(board.loc);  
+  const [title, setTitle] = useState(board.title);  
   const [content, setContent] = useState(board.content);
   const [category, setCategory] = useState(board.category);
+  const [imageUrl, setImageUrl] = useState(board.imageUrl);
   const boardNo = board.boardNo;
+  const [imageSrc, setImageSrc] = useState(null); // 이미지 소스를 저장할 상태
+  const [imageFile, setImageFile] = useState(null); // 이미지 파일 객체를 저장할 상태
+  const [showAlert, setShowAlert] = useState(false); // 에러 알림 상태
+
+  // 페이지가 불려질 때 이미지 파일 가져오기
+  useEffect(() => {
+    if (imageUrl) {
+      console.log("0. imageUrl : ", imageUrl)
+      const fetchImage = async () => {
+        try {
+          const response = await axios.get('http://localhost:8080/getImage', {
+            params: { imageUrl }, // 이미지 경로를 쿼리 파라미터로 전달
+            responseType: 'blob', // Blob 데이터를 요청
+          });
+
+          const imageBlob = response.data;
+         const imageObjectURL = URL.createObjectURL(imageBlob);
+         setImageSrc(imageObjectURL); // Blob 데이터를 URL로 변환하여 이미지 소스에 할당
+        } catch (error) {
+        console.error('Error fetching image:', error);
+        }
+     };
+
+     fetchImage();
+   }
+  }, []);
+
+
 
   const handleUpdateBoard = async () => {
-    console.log(boardNo, "수정할거야");
 
-    const data = { boardNo, title, content, category };
+    if (!title || !category || !content) {
+      setShowAlert(true);
+      return;
+     }
+
+     const formData = new FormData();
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('content', content);
+    formData.append('boardNo', boardNo);
+
+    // 새 이미지 파일이 선택된 경우에만 formData에 추가
+    if (imageFile) {
+      formData.append('image', imageFile);
+    } else if (imageUrl) {
+      // 새 파일이 없고 기존 이미지가 존재하면 imageUrl을 추가
+      formData.append('imageUrl', imageUrl);
+    }
+    
+
     try {
-      const response = await axios.post('http://localhost:8080/updateBoard', data);
+     
+      const response = await axios.post('http://localhost:8080/updateBoard', formData);
 
       if (response.status === 200) {
         onClose(true); // 보드 목록 새로 고침 필요
@@ -26,8 +73,10 @@ const ReadBoard = ({ board, onClose }) => {
     }
   };
 
+
+
   const handleDeleteBoard = async () => {
-    console.log(boardNo, "삭제할거야");
+   
     const data = { boardNo };
 
     if (window.confirm('정말로 삭제하시겠습니까?')) {
@@ -47,12 +96,44 @@ const ReadBoard = ({ board, onClose }) => {
     setIsEditing(!isEditing);
   };
 
+  const handleDeleteImage = () => {
+    setImageSrc(null); // 이미지 삭제
+    setImageUrl(null); // 이미지 URL 삭제
+  };
+
+  // 이미지 파일 선택 핸들러
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {  
+      setImageFile(file); // 이미지 파일 객체 설정
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result); // 미리보기 이미지 URL 설정
+        
+      };
+      reader.readAsDataURL(file);
+    }
+
+    console.log("이미지 파일 선택 핸들러 확인 : ", file);   
+    console.log("이미지 파일 선택 핸들러 확인 : ", imageFile);
+  };
+
+
+
+
+
+
   return (
     <Modal isOpen={true} toggle={() => onClose(false)}>
       <ModalHeader toggle={() => onClose(false)}>
         {isEditing ? '보드 수정' : '보드 상세'}
       </ModalHeader>
       <ModalBody>
+      {showAlert && (
+          <Alert color="danger">
+            제목, 카테고리, 내용은 필수 입력 사항입니다.
+          </Alert>
+        )}
         <Form>
           <FormGroup row>
             <Label for="boardTitle" sm={3}>제목</Label>
@@ -109,6 +190,64 @@ const ReadBoard = ({ board, onClose }) => {
               )}
             </Col>
           </FormGroup>
+
+          <FormGroup row>
+  <Label for="boardImage" sm={3}>이미지</Label>
+  <Col sm={9}>
+    {isEditing ? (
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        {/* 이미지 미리보기 */}
+        {imageSrc ? (
+          <>
+            <img src={imageSrc} alt="Board Image" style={{ maxWidth: '100%' }} />
+            <Button
+              color="danger"
+              size="sm"
+              style={{
+                position: 'absolute',
+                top: '0',
+                right: '0',
+                borderRadius: '50%',
+                padding: '0.5rem',
+                fontSize: '0.75rem',
+                lineHeight: '1',
+              }}
+              onClick={handleDeleteImage}
+            >
+              X
+            </Button>
+          </>
+        ) : (
+          <>
+            {/* 이미지 선택 버튼 */}
+            <Button color="primary" onClick={() => document.getElementById('boardImage').click()}>
+              이미지 선택
+            </Button>
+            <Input
+              type="file"
+              id="boardImage"
+              name="image"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+            />
+            {/* 기존 이미지 미리보기 */}
+            {imageUrl && (
+              <div className="mt-2">
+                <img src={imageUrl} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'cover' }} />
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    ) : (
+      /* 수정 모드가 아닐 때 기존 이미지 출력 */
+      (imageSrc || imageUrl) && (
+        <img src={imageSrc || imageUrl} alt="Board Image" style={{ maxWidth: '100%' }} />
+      )
+    )}
+  </Col>
+</FormGroup>
+
         </Form>
       </ModalBody>
       <ModalFooter>
