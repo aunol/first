@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { Button, DropdownItem, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Button, FormGroup, Input, Label, ListGroup, ListGroupItem, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import KakaoMap from 'variables/KakaoMap';
 
 export const hour24Rows = [
@@ -74,19 +74,25 @@ const Hospital = ({ hospitals }) => {
       </div>
 
       <div style={{ 
-  position: 'relative', 
-  overflow: 'hidden', 
-  width: 'calc(100% - 4px)', 
-  height: '800px', 
-  flexGrow: 1, 
-  marginRight: '4px' 
-}}>
-  <KakaoMap hospitals={filterHospitals()} selectedHospital={selectedHospital} onHospitalSelect={handleHospitalSelect} />
-</div>
+        position: 'relative', 
+        overflow: 'hidden', 
+        width: 'calc(100% - 4px)', 
+        height: '800px', 
+        flexGrow: 1, 
+        marginRight: '4px' 
+      }}>
+        <KakaoMap 
+          hospitals={filterHospitals()} 
+          selectedHospital={selectedHospital} 
+          onHospitalSelect={handleHospitalSelect} 
+        />
+      </div>
 
-
-      <Modal isOpen={modalOpen} toggle={toggleModal} size="lg" style={{ width: '100%', height: '100%' }} >
-        <ModalHeader toggle={toggleModal}>필터 및 병원 리스트</ModalHeader>
+      <Modal isOpen={modalOpen} toggle={toggleModal} size="lg">
+        <ModalHeader toggle={toggleModal}>
+          필터 및 병원 리스트
+          {hospitals.length}개의 병원이 검색되었습니다.
+        </ModalHeader>
         <ModalBody>
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 1, paddingRight: '10px' }}>
@@ -166,17 +172,28 @@ const Hospital = ({ hospitals }) => {
             <div style={{ flex: 2, paddingLeft: '10px', maxHeight: '400px', overflowY: 'auto' }}>
               <h5>병원 리스트</h5>
               {filterHospitals().length > 0 ? (
-                filterHospitals().map(hospital => (
-                  <DropdownItem
-                    key={hospital.hospitalNo}
-                    onClick={() => handleHospitalSelect(hospital)}
-                    active={selectedHospital && selectedHospital.hospitalNo === hospital.hospitalNo}
-                  >
-                    {hospital.hospitalName}
-                  </DropdownItem>
-                ))
+                <ListGroup>
+                  {filterHospitals().map(hospital => (
+                    <ListGroupItem
+                      key={hospital.hospitalNo}
+                      onClick={() => {
+                        handleHospitalSelect(hospital);
+                        // 병원 클릭 시 지도를 이동
+                        const latLng = new window.kakao.maps.LatLng(hospital.hospitalLati, hospital.hospitalLongi);
+                        if (map) {
+                          map.setCenter(latLng);
+                          map.setLevel(3);
+                        }
+                        toggleModal(); // 모달 닫기
+                      }}
+                      active={selectedHospital && selectedHospital.hospitalNo === hospital.hospitalNo}
+                    >
+                      {hospital.hospitalName}
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
               ) : (
-                <DropdownItem disabled>리스트에 병원이 없습니다.</DropdownItem>
+                <ListGroupItem disabled>리스트에 병원이 없습니다.</ListGroupItem>
               )}
             </div>
           </div>
