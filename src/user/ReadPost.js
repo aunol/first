@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { createUrl } from 'layouts/createUrl';
 
 const ReadPost = ({ post, onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -19,7 +20,8 @@ const ReadPost = ({ post, onClose }) => {
     if (imageUrl) {
       const fetchImage = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/getImage', {
+          const fullUrl = createUrl('getImage');
+          const response = await axios.get(fullUrl, {
             params: { imageUrl }, // 이미지 경로를 쿼리 파라미터로 전달
             responseType: 'blob', // Blob 데이터를 요청
           });
@@ -61,7 +63,8 @@ const ReadPost = ({ post, onClose }) => {
     console.log("확인하자 : ", formData); 
 
     try {
-      const response = await axios.post('http://localhost:8080/updatePost', formData);
+      const fullUrl = createUrl('updatePost');
+      const response = await axios.post(fullUrl, formData);
       if (response.status === 200) {
         onClose(true); // 포스트 목록 새로 고침 필요
       }
@@ -78,7 +81,8 @@ const ReadPost = ({ post, onClose }) => {
 
     if (window.confirm('정말로 삭제하시겠습니까?')) {
       try {
-        const response = await axios.post('http://localhost:8080/deletePost', data);
+        const fullUrl = createUrl('deletePost');
+        const response = await axios.post(fullUrl, data);
         if (response.status === 200) {
           onClose(true); // 포스트 목록 새로 고침 필요
         }

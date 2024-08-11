@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { createUrl } from 'layouts/createUrl';
 
 const PetNew = ({ isOpen, toggle, onSave }) => {
   const [pet, setPet] = useState({ petName: '', petSpecies: '', petBirth: '', petGender: '' });
@@ -18,7 +19,8 @@ const PetNew = ({ isOpen, toggle, onSave }) => {
 
     const userNo = sessionStorage.getItem('UserNo');
     try {
-      const response = await axios.post('http://localhost:8080/createPet', { ...pet, userNo });
+      const fullUrl = createUrl('createPet');
+      const response = await axios.post(fullUrl, { ...pet, userNo });
       const result = response.data;
 
       toggle();

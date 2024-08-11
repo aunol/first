@@ -7,6 +7,7 @@ import MyBoarding from "user/MyBoarding";
 import MyInfo from "user/MyInfo";
 import MyPosting from "user/MyPosting";
 import PetInfo from "user/PetInfo";
+import { createUrl } from "layouts/createUrl";
 
 function Account() {
   const notificationAlert = React.useRef();
@@ -40,7 +41,8 @@ function Account() {
 
   // 펫 데이터 가져오기
   const fetchPetData = () => {
-    axios.get('http://localhost:8080/petList', { params: { userNo } },
+    const fullUrl = createUrl('petList');
+    axios.get(fullUrl, { params: { userNo } },
       {
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +61,8 @@ function Account() {
   // 포스팅데이터 가져오기
 
   const fetchPostData = () => {
-    axios.get('http://localhost:8080/postList', { params: { userNo } },
+    const fullUrl = createUrl('postList');
+    axios.get(fullUrl, { params: { userNo } },
       {
         headers: {
           'Content-Type': 'application/json'
@@ -78,7 +81,8 @@ function Account() {
   // 보드데이터 가져오기
 
   const fetchBoardData = () => {
-    axios.get('http://localhost:8080/boardList', { params: { userNo } },
+    const fullUrl = createUrl('boardList');
+    axios.get(fullUrl, { params: { userNo } },
       {
         headers: {
           'Content-Type': 'application/json'

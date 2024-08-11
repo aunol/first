@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { createUrl } from 'layouts/createUrl'; 
+
 
 const AddBoard = ({ onClose }) => {
   const [newBoard, setNewBoard] = useState({ title: '', category: '', content: '', imgFile: null });
@@ -58,8 +60,9 @@ const AddBoard = ({ onClose }) => {
 
     try {
       console.log(formData); // 데이터 확인용 로그
-    
-      await axios.post('http://localhost:8080/addBoard', formData); // API URL 교체 필요
+      
+      const fullUrl = createUrl('addBoard'); // createUrl 함수를 사용하여 전체 URL 생성
+      await axios.post(fullUrl, formData); // API URL 교체 필요
       onClose(true); // 보드 목록 새로 고침 필요
     } catch (error) {
       console.error('보드 추가 중 오류 발생:', error);

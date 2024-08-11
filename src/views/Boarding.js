@@ -3,13 +3,15 @@ import PanelHeader from 'components/PanelHeader/PanelHeader.js';
 import BoardingList from 'ingInside/BoardingList';
 import { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
+import { createUrl } from 'layouts/createUrl';
 
 function Boarding() {
   const [boardData, setBoardData] = useState([]); // 게시판 데이터
   
 
   const fetchBoardData = () => {
-    axios.get('http://localhost:8080/boardingList')
+    const fullUrl = createUrl('boardingList');
+    axios.get(fullUrl)
       .then(response => {
         console.log(response.data);
         setBoardData(response.data);

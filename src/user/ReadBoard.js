@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { createUrl } from 'layouts/createUrl';
 
 const ReadBoard = ({ board, onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -19,7 +20,8 @@ const ReadBoard = ({ board, onClose }) => {
       console.log("0. imageUrl : ", imageUrl)
       const fetchImage = async () => {
         try {
-          const response = await axios.get('http://localhost:8080/getImage', {
+          const fullUrl = createUrl('getImage');
+          const response = await axios.get(fullUrl, {
             params: { imageUrl }, // 이미지 경로를 쿼리 파라미터로 전달
             responseType: 'blob', // Blob 데이터를 요청
           });
@@ -62,7 +64,8 @@ const ReadBoard = ({ board, onClose }) => {
 
     try {
      
-      const response = await axios.post('http://localhost:8080/updateBoard', formData);
+      const fullUrl = createUrl('updateBoard');
+      const response = await axios.post(fullUrl, formData);
 
       if (response.status === 200) {
         onClose(true); // 보드 목록 새로 고침 필요
@@ -81,7 +84,8 @@ const ReadBoard = ({ board, onClose }) => {
 
     if (window.confirm('정말로 삭제하시겠습니까?')) {
       try {
-        const response = await axios.post('http://localhost:8080/deleteBoard', data);
+        const fullUrl = createUrl('deleteBoard');
+        const response = await axios.post(fullUrl, data);
         if (response.status === 200) {
           onClose(true); // 보드 목록 새로 고침 필요
         }

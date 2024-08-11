@@ -3,13 +3,15 @@ import PanelHeader from 'components/PanelHeader/PanelHeader.js';
 import PostingList from 'ingInside/PostingList.js';
 import { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
+import { createUrl } from 'layouts/createUrl';
 
 function Posting() {
   const [postData, setPostData] = useState([]); // 포스팅 데이터
   const userLoc = sessionStorage.getItem('UserLoc');
 
   const fetchPostingData = () => {
-    axios.get('http://localhost:8080/postingList')
+    const fullUrl = createUrl('postingList');
+    axios.get(fullUrl)
       .then(postResponse => {
         console.log(postResponse.data);
         setPostData(postResponse.data);

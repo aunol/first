@@ -1,15 +1,18 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { createUrl } from 'layouts/createUrl';
 
 const PostDetail = ({ selectedPost, handleModalClose, currentIndex, totalPosts, onPostChange }) => {
   const [imageSrc, setImageSrc] = useState(null);
+
 
   useEffect(() => {
     const fetchImage = async () => {
       if (selectedPost.imageUrl) {
         try {
-          const response = await axios.get('http://localhost:8080/getImage', {
+          const fullUrl = createUrl('getImage'); // createUrl 함수를 사용하여 전체 URL 생성
+          const response = await axios.get(fullUrl, {
             params: { imageUrl: selectedPost.imageUrl },
             responseType: 'blob',
           });
