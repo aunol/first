@@ -3,7 +3,7 @@
   "version": "1.5.2",
   "main": "dist/index.js",
   "private": true,
-  "proxy": "http://192.168.0.214:8080",
+  "proxy": "http://localhost:8080",
   "homepage": "https://demos.creative-tim.com/now-ui-dashboard-react/#/",
   "dependencies": {
     "ajv": "^8.17.1",
