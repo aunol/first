@@ -1,6 +1,7 @@
-import axios from 'axios';
 import PanelHeader from 'components/PanelHeader/PanelHeader.js';
 import BoardingList from 'ingInside/BoardingList';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
@@ -9,7 +10,14 @@ function Boarding() {
   
 
   const fetchBoardData = () => {
-    axios.get('http://localhost:8080/boardingList')
+    const fullUrl = createUrl('boardingList');
+    // 헤더 설정
+     const headers = {
+       'Content-Type': 'application/json'
+    
+     };
+     
+    axios.get(fullUrl, {headers} )
       .then(response => {
         console.log(response.data);
         setBoardData(response.data);

@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -27,7 +28,8 @@ const PetFix = ({ isOpen, toggle, pet, onSave, onDelete }) => {
     console.log('업데이트 입력', userNo, currentPet);
 
     try {
-      const response = await axios.post('http://localhost:8080/updatePet', { ...currentPet, userNo });
+      const fullUrl = createUrl('updatePet');
+      const response = await axios.post(fullUrl, { ...currentPet, userNo });
       const result = response.data;
 
       toggle();
@@ -44,7 +46,8 @@ const PetFix = ({ isOpen, toggle, pet, onSave, onDelete }) => {
 
     if (window.confirm('정말로 삭제하시겠습니까?')) {
       try {
-        await axios.post('http://localhost:8080/deletePet', deletePet);
+        const fullUrl = createUrl('deletePet');
+        await axios.post(fullUrl, deletePet);
         
         toggle();
         onDelete(); // Call the onDelete callback to reload pet data

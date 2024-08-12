@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -7,8 +8,7 @@ const FindId = ({ isOpen, toggle }) => {
     
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
-    const url = 'http://localhost:8080/mailCheck';
-
+  
     const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 모달이 열릴 때마다 input 필드를 초기화
@@ -34,9 +34,11 @@ const FindId = ({ isOpen, toggle }) => {
    
 
     try{
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
       const data = { email:email };
-      const response = await axios.post(url, data);      
+
+      const fullUrl = createUrl('mailCheck');
+      const response = await axios.post(fullUrl, data);      
       const result = response.data;
 
       if(result.message === "기재하신 메일주소로 아이디를 전송하였습니다.") {

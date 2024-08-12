@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, FormFeedback, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -44,7 +45,9 @@ const AddUser = ({ isOpen, toggle }) => {
   // 서버 측 중복 검사 함수
   const checkDuplicate = async (field, value) => {
     try {
-      const response = await axios.post('http://localhost:8080/checkDuplicate', { field, value });
+
+      const fullUrl = createUrl('checkDuplicate');
+      const response = await axios.post(fullUrl, { field, value });
       return response.data.isDuplicate;
     } catch (error) {
       console.error(`${field} 중복 검사 중 오류 발생:`, error);
@@ -133,8 +136,9 @@ const AddUser = ({ isOpen, toggle }) => {
     const data = { userId: userId, password: password, email: email, userName: userName };
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await axios.post('http://localhost:8080/addUser', data);
+
+      const fullUrl = createUrl('addUser');
+      const response = await axios.post(fullUrl , data);
       const result = response.data;
 
       if (result.message === '가입되었습니다.') {

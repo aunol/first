@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from "layouts/createUrl";
 import { useState } from "react";
 import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
@@ -55,7 +56,9 @@ const AddPost = ({ onClose }) => {
 
     try {
       console.log(formData); // 데이터 확인용 로그
-      await axios.post('http://localhost:8080/addPost', formData);
+
+      const fullUrl = createUrl('addPost'); 
+      await axios.post(fullUrl, formData);
       onClose(true); // 포스트 목록 새로 고침 필요
     } catch (error) {
       console.error('포스트 추가 중 오류 발생:', error);

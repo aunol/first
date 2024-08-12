@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import Hospital from './Hospital';
 
@@ -7,7 +8,8 @@ const HospitalContainer = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/hospitals')
+    const fullUrl = createUrl('hospitals');
+    axios.get(fullUrl)
       .then(response => {
         console.log(response.data);
         setHospitals(response.data);

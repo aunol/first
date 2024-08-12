@@ -1,5 +1,6 @@
-import axios from "axios";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from "layouts/createUrl";
 import React, { useEffect, useState } from "react"; // useState와 useEffect를 import합니다.
 import NotificationAlert from "react-notification-alert";
 import { Col, Row } from "reactstrap";
@@ -40,7 +41,8 @@ function Account() {
 
   // 펫 데이터 가져오기
   const fetchPetData = () => {
-    axios.get('http://localhost:8080/petList', { params: { userNo } },
+    const fullUrl = createUrl('petList');
+    axios.get(fullUrl, { params: { userNo } },
       {
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +61,8 @@ function Account() {
   // 포스팅데이터 가져오기
 
   const fetchPostData = () => {
-    axios.get('http://localhost:8080/postList', { params: { userNo } },
+    const fullUrl = createUrl('postList');
+    axios.get(fullUrl, { params: { userNo } },
       {
         headers: {
           'Content-Type': 'application/json'
@@ -78,7 +81,8 @@ function Account() {
   // 보드데이터 가져오기
 
   const fetchBoardData = () => {
-    axios.get('http://localhost:8080/boardList', { params: { userNo } },
+    const fullUrl = createUrl('boardList');
+    axios.get(fullUrl, { params: { userNo } },
       {
         headers: {
           'Content-Type': 'application/json'

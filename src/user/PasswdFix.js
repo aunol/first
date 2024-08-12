@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useState } from 'react';
 import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -49,7 +50,8 @@ const PasswdFix = ({ isOpen, toggle }) => {
     console.log("자료 : ", userId, currentPassword, newPassword);
 
     try {
-      const response = await axios.post('http://localhost:8080/changePassword',  null, {
+      const fullUrl = createUrl('changePassword');
+      const response = await axios.post(fullUrl,  null, {
         params: {
             userId,
             currentPassword,

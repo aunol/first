@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useState } from 'react';
 import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
@@ -27,7 +28,9 @@ const LocFix = ({ isOpen, toggle }) => {
     }
     
     try {
-      await axios.post('http://localhost:8080/updateLoc', null, {
+      const fullUrl = createUrl('updateLoc');
+      
+      await axios.post(fullUrl, null, {
         params: { userNo, newLoc }
     });
       alert('위치가 업데이트되었습니다.');

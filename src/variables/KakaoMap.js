@@ -36,7 +36,14 @@ const KakaoMap = ({ hospitals, selectedHospital, onHospitalSelect }) => {
           content: content,
           removable: true
         });
-      
+
+        window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+          infoWindow.open(mapInstance, marker);
+        });
+
+        window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+          infoWindow.close();
+        });
 
         window.kakao.maps.event.addListener(marker, 'click', () => {
           onHospitalSelect(hospital);

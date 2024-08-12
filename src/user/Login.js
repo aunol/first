@@ -1,15 +1,15 @@
-import axios from 'axios';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+
 
 const Login = ({ isOpen, toggle }) => {
     const navigate = useNavigate();    
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [loginCheck, setLoginCheck] = useState(false);
-
-    const url = 'http://localhost:8080/login';
 
     // 모달이 열릴 때마다 input 필드를 초기화
     useEffect(() => {
@@ -28,9 +28,11 @@ const Login = ({ isOpen, toggle }) => {
         }
 
         try { 
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            
             const data = { userId: userId, password: password };
-            const response = await axios.post(url, data);
+            
+            const fullUrl = createUrl('login');
+            const response = await axios.post(fullUrl, data);
             const result = response.data;
 
             if (result.message === '로그인 성공') {

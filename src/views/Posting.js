@@ -1,6 +1,7 @@
-import axios from 'axios';
 import PanelHeader from 'components/PanelHeader/PanelHeader.js';
 import PostingList from 'ingInside/PostingList.js';
+import axios from 'layouts/AxiosConfig';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
@@ -9,7 +10,8 @@ function Posting() {
   const userLoc = sessionStorage.getItem('UserLoc');
 
   const fetchPostingData = () => {
-    axios.get('http://localhost:8080/postingList')
+    const fullUrl = createUrl('postingList');
+    axios.get(fullUrl)
       .then(postResponse => {
         console.log(postResponse.data);
         setPostData(postResponse.data);
