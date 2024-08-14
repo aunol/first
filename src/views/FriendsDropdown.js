@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownToggle
 } from 'reactstrap';
-
+   
 const FriendsDropdown = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [friendsData, setFriendsData] = useState([]);

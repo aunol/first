@@ -95,7 +95,7 @@ const Friend = () => {
     }
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e) => {   
     if (e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
