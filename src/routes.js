@@ -17,8 +17,14 @@
 */
 import Account from "views/Account.js";
 import Boarding from "views/Boarding";
+import Friend from "views/Friend";
 import HospitalContainer from "views/HospitalContainer";
 import Posting from "views/Posting";
+
+
+// 세션 스토리지에서 로그인 상태 확인
+
+
 
 var dashRoutes = [
 
@@ -52,7 +58,18 @@ var dashRoutes = [
     icon: "media-2_sound-wave",
     component: <Boarding />,
     layout: "/admin",
-  }
+  },
+
+   // 로그인한 사용자에게만 보이는 FRIEND 경로
+   {
+    path: "/friend",
+    name: "FRIEND",
+    icon: "design_image",
+    component: <Friend />,
+    layout: "/admin",
+  },
+
+
 
   // {
   //   path: "/icons",
@@ -68,11 +85,12 @@ var dashRoutes = [
   //   component: <Notifications />,
   //   layout: "/admin",
   // },
+
   // {
-  //   path: "/friends",
+  //   path: "/friendsDropdown",
   //   name: "FRIENDS",
   //   icon: "users_single-02",
-  //   component: <Friends />,
+  //   component: <FriendsDropdown />,
   //   layout: "/admin",
   // },
   
@@ -105,5 +123,5 @@ var dashRoutes = [
   // },
 
 
-];
+]; 
 export default dashRoutes;

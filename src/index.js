@@ -25,15 +25,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import AdminLayout from "layouts/Admin.js";
+
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/admin/*" element={<AdminLayout />} />
-      <Route path="*" element={<Navigate to="/admin/hospital" replace />} />
-    </Routes>
-  </BrowserRouter>
+  <Routes>
+    <Route path="/admin/*" element={<AdminLayout />}>     
+    </Route>
+    <Route path="*" element={<Navigate to="/admin/hospital" replace />} />
+  </Routes>
+</BrowserRouter>
 );

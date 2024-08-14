@@ -2,10 +2,10 @@ import PerfectScrollbar from "perfect-scrollbar";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav } from "reactstrap";
+import dashRoutes from "routes";
 import AddUser from "user/AddUser";
 import FindId from "user/FindId";
 import Login from "user/Login";
-import dashRoutes from "routes";
 
 var ps;
 
@@ -64,6 +64,7 @@ function Sidebar(props) {
 
   // Handle logout logic
   const handleLogout = () => {
+    sessionStorage.removeItem('isAuthenticated');
     sessionStorage.clear();
     setIsLoggedIn(false);
   };
@@ -78,7 +79,7 @@ function Sidebar(props) {
       <div className="sidebar-wrapper" ref={sidebar}>
         <Nav>
           {isLoggedIn && (
-            <li className="nav-item">
+            <li className="nav-item" style={{ marginBottom: '10px' }}>
               <NavLink to="/" className="nav-link" onClick={handleLogout}>
                 <i className="now-ui-icons ui-1_simple-remove" />
                 <p>LOG OUT</p>
@@ -87,6 +88,7 @@ function Sidebar(props) {
           )}
 
           {!isLoggedIn && (
+            
             <li>
               <Dropdown nav isOpen={dropdownOpen} toggle={dropdownToggle}>
                 <DropdownToggle caret nav onClick={toggleSidebar}>
@@ -121,8 +123,11 @@ function Sidebar(props) {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-            </li>
+            </li>           
+            
           )}
+         
+
 
           {filteredRoutes.map((prop, key) => {
             if (prop.redirect) return null;

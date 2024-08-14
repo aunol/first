@@ -11,6 +11,8 @@ const PostingList = ({ postData, userLoc }) => {
   const [showUserLocOnly, setShowUserLocOnly] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
+  const userNo = sessionStorage.getItem('userNo');
+  const userBlock = sessionStorage.getItem('userBlock');
 
   const categoryOptions = ['전체', '강아지', '고양이', '특수포유류', '파충류', '조류', '어류', '양서류', 'etc'];
 

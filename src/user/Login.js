@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { createUrl } from 'layouts/createUrl';
 
 
 const Login = ({ isOpen, toggle }) => {
@@ -38,14 +38,18 @@ const Login = ({ isOpen, toggle }) => {
             if (result.message === '로그인 성공') {
                 setLoginCheck(true);
                 sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('isAuthenticated', 'true');
                 sessionStorage.setItem("UserNo", result.UserNo); 
                 sessionStorage.setItem("UserId", result.UserId); 
                 sessionStorage.setItem("UserName", result.UserName);
                 sessionStorage.setItem("UserLoc", result.UserLoc || '없음');
-                sessionStorage.setItem("UserTitle", result.UserTitle || 'Hello MyHome');              
+                sessionStorage.setItem("UserBlock", result.UserBlock);
+                sessionStorage.setItem("UserTitle", result.UserTitle || 'Hello MyHome'); 
+                sessionStorage.setItem("FriendList", result.FriendList);
+                sessionStorage.setItem("BlockList", result.BlockList);             
                 
-                alert(result.UserName + '님 환영합니다.');
-                console.log(result.UserNo, result.UserId, result.UserName, result.UserLoc, result.UserTitle);
+                alert(result.UserName + '님 환영합니다.');                
+                console.log(result.UserNo, result.UserId, result.UserName, result.UserLoc, result.FriendList, result.BlockList);
 
                 navigate('/');
             } else if (result.message === '아이디 혹은 비밀번호를 확인해주세요.') {

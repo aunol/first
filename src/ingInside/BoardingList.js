@@ -1,27 +1,33 @@
+import Fmodal from 'friend/Fmodal';
 import { useEffect, useState } from 'react';
-import { Card, CardBody, CardHeader, Input, Pagination, PaginationItem, PaginationLink, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Input, Modal, ModalHeader, Pagination, PaginationItem, PaginationLink, Table } from 'reactstrap';
 import BoardDetail from './BoardDetail';
 
-const BoardingList = ({ boardData }) => {
+const BoardingList = ({ boardData, blockList, refreshBlockList }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('전체');
   const [selectedBoard, setSelectedBoard] = useState(null); // 선택된 게시물
   const [showPopup, setShowPopup] = useState(false); // 팝업 표시 여부
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [filteredBoards, setFilteredBoards] = useState([]); // 필터된 게시물
+  const [currentUserName, setCurrentUserName] = useState(''); // 현재 클릭한 유저의 이름
   const itemsPerPage = 10; // 페이지 당 아이템 수
   const [currentIndex, setCurrentIndex] = useState(null); // 현재 게시물 인덱스
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태
+  const userNo = sessionStorage.getItem('UserNo');
 
   const categoryOptions = ['전체', '강아지', '고양이', '특수포유류', '파충류', '조류', '어류', '양서류'];
 
   useEffect(() => {
     const filterBoards = () => {
       let filtered = boardData;
-      
+
+      // 카테고리 필터링
       if (filterCategory !== '전체') {
         filtered = filtered.filter(board => board.category === filterCategory);
       }
-      
+
+      // 검색어 필터링
       if (searchTerm) {
         filtered = filtered.filter(board => 
           board.title.includes(searchTerm) ||
@@ -30,13 +36,20 @@ const BoardingList = ({ boardData }) => {
           new Date(board.createdAt).toLocaleDateString().includes(searchTerm)
         );
       }
-  
+
+      // 차단된 사용자 게시물 제외하기
+      const blockedUserNos = blockList
+        .filter(block => block.status === 'block') // 상태가 'block'인 항목만 필터링
+        .map(block => block.relatedUserNo); // 관련 사용자 번호만 추출
+      
+      filtered = filtered.filter(board => !blockedUserNos.includes(board.userNo));
+
       setFilteredBoards(filtered);
       setCurrentPage(1); // 필터 변경 시 페이지를 첫 페이지로 초기화
     };
 
     filterBoards();
-  }, [boardData, filterCategory, searchTerm]);
+  }, [boardData, filterCategory, searchTerm, blockList]);
 
   useEffect(() => {
     if (selectedBoard) {
@@ -65,6 +78,11 @@ const BoardingList = ({ boardData }) => {
   const handlePostChange = (newIndex) => {
     const newBoard = filteredBoards[newIndex];
     setSelectedBoard(newBoard);
+  };
+
+  const toggleModal = (userName) => {
+    setCurrentUserName(userName);
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -102,10 +120,16 @@ const BoardingList = ({ boardData }) => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map(board => (
-                <tr key={board.boardNo} onClick={() => handleBoardClick(board)} style={{ cursor: 'pointer' }}>
-                  <td style={{ textAlign: 'center' }}>{board.userName}</td>
-                  <td style={{ textAlign: 'center' }}>{board.title}</td>
+              {currentItems.map((board) => (
+                <tr key={board.boardNo} style={{ cursor: 'pointer' }}>
+                  <td style={{ textAlign: 'center' }}>
+                    <span onClick={() => toggleModal(board.userName)} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>
+                      {board.userName}
+                    </span>
+                  </td>
+                  <td style={{ textAlign: 'center' }} onClick={() => handleBoardClick(board)}>
+                    {board.title}
+                  </td>
                   <td style={{ textAlign: 'center' }}>{board.category}</td>
                 </tr>
               ))}
@@ -145,6 +169,16 @@ const BoardingList = ({ boardData }) => {
           onBoardChange={handlePostChange}
         />
       )}
+
+      {/* 모달 팝업 */}
+      <Modal isOpen={isModalOpen} toggle={() => toggleModal('')}>
+        <ModalHeader toggle={() => toggleModal('')}>{currentUserName}</ModalHeader>
+        <Fmodal 
+          currentUserName={currentUserName} 
+          toggleModal={() => toggleModal('')}
+          refreshBlockList={refreshBlockList} // refreshBlockList 함수를 전달
+        />
+      </Modal>
     </>
   );
 };

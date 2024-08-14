@@ -1,30 +1,49 @@
 import axios from 'axios';
 import PanelHeader from 'components/PanelHeader/PanelHeader.js';
 import BoardingList from 'ingInside/BoardingList';
+import { createUrl } from 'layouts/createUrl';
 import { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
-import { createUrl } from 'layouts/createUrl';
 
 function Boarding() {
-  const [boardData, setBoardData] = useState([]); // 게시판 데이터
-  
 
+  const userNo = sessionStorage.getItem('UserNo');
+  const [boardData, setBoardData] = useState([]); // 게시판 데이터
+  const [blockList, setBlockList] = useState([]); // 차단 목록 데이터
+  
+  const fetchBlockListData = () => {
+    const fullUrl = createUrl('blockList');
+    axios.post(fullUrl, null, { params: { userNo } })
+      .then(response => {
+        console.log(response.data);
+        setBlockList(response.data); // 차단 목록 데이터를 상태에 저장
+      })
+      .catch(error => {
+        console.error('Error fetching block list data:', error);
+      });
+  };
+  
   const fetchBoardData = () => {
     const fullUrl = createUrl('boardingList');
     axios.get(fullUrl)
       .then(response => {
         console.log(response.data);
-        setBoardData(response.data);
+        setBoardData(response.data); // 게시판 데이터를 상태에 저장
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
   };
 
-  
   useEffect(() => {
+    fetchBlockListData();
     fetchBoardData();
   }, []);
+
+  // 차단 목록 갱신 함수
+  const refreshBlockList = () => {
+    fetchBlockListData();
+  };
 
   return (
     <>
@@ -38,44 +57,16 @@ function Boarding() {
       <div className="content">
         <Row>
           <Col md={12} xs={12}>
-            <BoardingList boardData={boardData} />
+            <BoardingList 
+              boardData={boardData} 
+              blockList={blockList}
+              refreshBlockList={refreshBlockList} // refreshBlockList 함수를 전달
+            />
           </Col>
         </Row>
       </div>    
     </>
   );
 }
-
-const popupStyles = {
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
-  },
-  content: {
-    background: '#fff',
-    padding: '20px',
-    borderRadius: '5px',
-    width: '80%',
-    maxWidth: '600px',
-    position: 'relative',
-  },
-  closeButton: {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    background: 'none',
-    border: 'none',
-    fontSize: '20px',
-    cursor: 'pointer',
-  },
-};
 
 export default Boarding;

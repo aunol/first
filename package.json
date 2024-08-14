@@ -13,6 +13,7 @@
     "jquery": "^3.7.1",
     "mobx": "^6.13.1",
     "mobx-react-lite": "^4.0.7",
+    "now-ui-dashboard-react": "file:",
     "perfect-scrollbar": "1.5.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.4",

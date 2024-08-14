@@ -76,14 +76,17 @@ function Admin(props) {
                 path={prop.path}
                 element={prop.component}
                 key={key}
-                exact
+                
               />
             );
           })}
+         
           <Route
             path="/admin"
             element={<Navigate to="/admin/hospital" replace />}
           />
+          
+
         </Routes>
         <Footer fluid />
       </div>
