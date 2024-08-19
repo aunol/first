@@ -1,7 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Button, DropdownItem, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import KakaoMap from 'variables/KakaoMap';
+import KakaoMap from "variables/KakaoMap"; // 경로를 실제 위치로 수정";
 
 export const hour24Rows = [
   { id: 0, name: '24시간' },
@@ -30,37 +29,27 @@ const Hospital = ({ hospitals }) => {
   const [selectedRegions, setSelectedRegions] = useState(new Set());
   const [selectedHospital, setSelectedHospital] = useState(null);
 
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
+  const toggleModal = () => setModalOpen(!modalOpen);
 
-  const handleHourChange = (selectedHours) => {
-    setSelectedHours(selectedHours);
-  };
-
-  const handleSpeciesChange = (selectedSpecies) => {
-    setSelectedSpecies(selectedSpecies);
-  };
-
-  const handleRegionChange = (selectedRegions) => {
-    setSelectedRegions(selectedRegions);
-  };
+  const handleHourChange = (selectedHours) => setSelectedHours(selectedHours);
+  const handleSpeciesChange = (selectedSpecies) => setSelectedSpecies(selectedSpecies);
+  const handleRegionChange = (selectedRegions) => setSelectedRegions(selectedRegions);
 
   const handleHospitalSelect = (hospital) => {
-    setSelectedHospital(hospital);
+    if (selectedHospital && selectedHospital.hospitalNo === hospital.hospitalNo) {
+      // 이미 선택된 병원을 클릭하면 선택 해제
+      setSelectedHospital(null);
+    } else {
+      // 새 병원을 선택
+      setSelectedHospital(hospital);
+    }
   };
 
   const filterHospitals = () => {
     return hospitals.filter(hospital => {
-      const isHourMatch = selectedHours.size === 0 || 
-        Array.from(selectedHours).some(hour => hospital.hospitalType.includes(hour));
-        
-      const isSpeciesMatch = selectedSpecies.size === 0 || 
-        Array.from(selectedSpecies).some(species => hospital.hospitalSpecies.includes(species));
-        
-      const isRegionMatch = selectedRegions.size === 0 || 
-        Array.from(selectedRegions).some(region => hospital.hospitalAddr.includes(region));
-      
+      const isHourMatch = selectedHours.size === 0 || Array.from(selectedHours).some(hour => hospital.hospitalType.includes(hour));
+      const isSpeciesMatch = selectedSpecies.size === 0 || Array.from(selectedSpecies).some(species => hospital.hospitalSpecies.includes(species));
+      const isRegionMatch = selectedRegions.size === 0 || Array.from(selectedRegions).some(region => hospital.hospitalAddr.includes(region));
       return isHourMatch && isSpeciesMatch && isRegionMatch;
     });
   };
@@ -73,19 +62,11 @@ const Hospital = ({ hospitals }) => {
         </span>
       </div>
 
-      <div style={{ 
-  position: 'relative', 
-  overflow: 'hidden', 
-  width: 'calc(100% - 4px)', 
-  height: '800px', 
-  flexGrow: 1, 
-  marginRight: '4px' 
-}}>
-  <KakaoMap hospitals={filterHospitals()} selectedHospital={selectedHospital} onHospitalSelect={handleHospitalSelect} />
-</div>
+      <div style={{ position: 'relative', overflow: 'hidden', width: 'calc(100% - 4px)', height: '800px', flexGrow: 1, marginRight: '4px' }}>
+        <KakaoMap hospitals={filterHospitals()} selectedHospital={selectedHospital} onHospitalSelect={handleHospitalSelect} />
+      </div>
 
-
-      <Modal isOpen={modalOpen} toggle={toggleModal} size="lg" style={{ width: '100%', height: '100%' }} >
+      <Modal isOpen={modalOpen} toggle={toggleModal} size="lg" style={{ width: '100%', height: '100%' }}>
         <ModalHeader toggle={toggleModal}>필터 및 병원 리스트</ModalHeader>
         <ModalBody>
           <div style={{ display: 'flex' }}>

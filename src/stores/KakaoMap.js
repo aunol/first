@@ -4,7 +4,6 @@ import { loadKakaoMaps } from 'variables/kakao';
 const KakaoMap = ({ hospitals, selectedHospital, onHospitalSelect }) => {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
-  const [activeMarker, setActiveMarker] = useState(null); // 현재 활성화된 마커
 
   useEffect(() => {
     loadKakaoMaps(() => {
@@ -17,16 +16,11 @@ const KakaoMap = ({ hospitals, selectedHospital, onHospitalSelect }) => {
       const mapInstance = new window.kakao.maps.Map(mapContainer, mapOption);
       setMap(mapInstance);
 
-      // 병원 마커 생성
+      // 지도 초기화 및 마커 추가
       const newMarkers = hospitals.map(hospital => {
         const marker = new window.kakao.maps.Marker({
           position: new window.kakao.maps.LatLng(hospital.hospitalLati, hospital.hospitalLongi),
-          map: mapInstance,
-          // 기본 마커 아이콘 설정
-          image: new window.kakao.maps.MarkerImage(
-            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-            new window.kakao.maps.Size(24, 35)
-          ),
+          map: mapInstance
         });
 
         const content = `
@@ -43,7 +37,6 @@ const KakaoMap = ({ hospitals, selectedHospital, onHospitalSelect }) => {
           removable: true
         });
 
-        // 마커 이벤트 설정
         window.kakao.maps.event.addListener(marker, 'mouseover', () => {
           infoWindow.open(mapInstance, marker);
         });
@@ -56,10 +49,12 @@ const KakaoMap = ({ hospitals, selectedHospital, onHospitalSelect }) => {
           onHospitalSelect(hospital);
         });
 
-        return { marker, hospital }; // 마커와 병원 정보 결합
+        return marker;
       });
 
       setMarkers(newMarkers);
+
+      // 지도 마우스 드래그로 이동 기능 (기본적으로 Kakao 지도 API는 지원)
     });
   }, [hospitals, onHospitalSelect]);
 
@@ -67,38 +62,38 @@ const KakaoMap = ({ hospitals, selectedHospital, onHospitalSelect }) => {
     if (selectedHospital && map) {
       const latLng = new window.kakao.maps.LatLng(selectedHospital.hospitalLati, selectedHospital.hospitalLongi);
       map.setCenter(latLng);
-      // map.setLevel(3);
+      map.setLevel(3);
 
-      // 이전에 활성화된 마커의 상태 복원
-      if (activeMarker) {
-        activeMarker.setImage(
+      // 기존 마커 이미지 초기화
+      markers.forEach(marker => {
+        marker.setImage(
           new window.kakao.maps.MarkerImage(
-            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+            'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
             new window.kakao.maps.Size(24, 35)
           )
         );
-      }
+      });
 
-      // 현재 선택된 마커의 색상 변경
-      const newActiveMarker = markers.find(markerObj =>
-        markerObj.hospital.hospitalNo === selectedHospital.hospitalNo
+      // 선택된 병원의 마커를 빨간색으로 변경
+      const selectedMarker = markers.find(marker => 
+        marker.getPosition().equals(latLng)
       );
 
-      if (newActiveMarker) {
-        newActiveMarker.marker.setImage(
+      if (selectedMarker) {
+        selectedMarker.setImage(
           new window.kakao.maps.MarkerImage(
-            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+            'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
             new window.kakao.maps.Size(24, 35)
           )
         );
-
-        setActiveMarker(newActiveMarker.marker);
-        window.kakao.maps.event.trigger(newActiveMarker.marker, 'click');
+        window.kakao.maps.event.trigger(selectedMarker, 'click');
       }
     }
-  }, [selectedHospital, map, markers, activeMarker]);
+  }, [selectedHospital, map]);
 
-  return <div id="map" style={{ width: "100%", height: "100vh" }}></div>;
+  return (
+    <div id="map" style={{ width: "100%", height: "100%" }}></div>
+  );
 };
 
 export default KakaoMap;
