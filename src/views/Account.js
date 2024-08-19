@@ -97,3 +97,43 @@ function Account() {
 }
 
 export default Account;
+
+/*
+const Friend = ({ friendName }) => {
+  const [friendData, setFriendData] = useState(null);
+
+  useEffect(() => {
+    const fetchFriendData = async () => {
+      try {
+        const response = await axios.get('/api/friend', { params: { name: friendName } });
+        setFriendData(response.data);
+      } catch (error) {
+        console.error('Error fetching friend data:', error);
+      }
+    };
+
+    fetchFriendData();
+  }, [friendName]);
+
+  return (
+    <div>
+      {friendData ? (
+        <Fboard boardData={friendData} fetchBoardData={() => fetchFriendData()} />
+      ) : (
+        <p>친구의 데이터를 불러오는 중입니다...</p>
+      )}
+    </div>
+  );
+};
+*/
+
+
+
+
+
+
+
+
+
+
+
