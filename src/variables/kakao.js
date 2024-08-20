@@ -6,7 +6,7 @@ export const loadKakaoMaps = (callback) => {
   }
 
   const script = document.createElement('script');
-  script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&autoload=false';
+  script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=abe34883b83f4fba085bcc9f8093c979&autoload=false';
   script.async = true;
   script.onload = () => {
     window.kakao.maps.load(callback);
